@@ -1,0 +1,30 @@
+<!-- ============================================== -->
+<!-- ==== स्टाइलिश TOC फ्लोटिंग/साइडबार HTML START ==== -->
+<!-- उद्देश्य: फ्लोटिंग आइकन और साइडबार पैनल का ढाँचा प्रदान करना। -->
+<!-- स्थान: ब्लॉगर थीम HTML में, </body> क्लोजिंग टैग से ठीक पहले, और मुख्य TOC जावास्क्रिप्ट से पहले। -->
+<!-- ============================================== -->
+
+<button aria-label='विषय सूची खोलें' id='stoc-floating-toc-icon'>🧾</button>
+
+<button aria-label='विषय सूची बंद करें' id='stoc-toc-sidebar-external-close'>
+    <i class='fas fa-times'></i>
+</button>
+
+<aside aria-hidden='true' id='stoc-toc-icon-sidebar'>
+  <div id='stoc-toc-icon-sidebar-header'>
+     <h3 id='stoc-toc-sidebar-title'>विषय - सूची</h3>
+     <button aria-label='बंद करें' class='stoc-toc-animated-close' id='stoc-toc-sidebar-internal-close'>
+          <i class='fas fa-xmark'></i>
+     </button>
+  </div>
+  <div id='stoc-toc-icon-sidebar-scrollbox'>
+     <ul id='stoc-toc-icon-sidebar-list'>
+         <!-- साइडबार TOC आइटम JS द्वारा यहाँ डाले जाएँगे -->
+     </ul>
+     <div class='stoc-toc-scroll-indicator' id='stoc-sidebar-scroll-indicator'>
+           <i class='fas fa-angles-down'></i>
+     </div>
+  </div>
+</aside>
+
+<!-- ==== स्टाइलिश TOC फ्लोटिंग/साइडबार HTML END ==== -->
