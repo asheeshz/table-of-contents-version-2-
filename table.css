@@ -1,0 +1,676 @@
+/* ==========================================================================
+   Stylish TOC CSS for Blogger (v1.0 - Prefixed with stoc-)
+   Author: [Your Name/Website Optional]
+   Description: CSS for the collapsible button TOC and floating sidebar TOC.
+   ========================================================================== */
+
+/* --- सामान्य चर और स्टाइल --- */
+:root {
+    /* रंग पैलेट */
+    --stoc-color-1: #6a11cb; /* गहरा बैंगनी */
+    --stoc-color-2: #2575fc; /* नीला */
+    --stoc-color-3: #00d2ff; /* हल्का सियान */
+    --stoc-color-4: #ff758c; /* गुलाबी */
+    --stoc-color-5: #fccb45; /* पीला */
+    /* टेक्स्ट और हाइलाइट */
+    --stoc-text-light: #ffffff;
+    --stoc-text-dark: #343a40; /* लिस्ट आइटम टेक्स्ट के लिए */
+    --stoc-text-muted: #6c757d;
+    --stoc-highlight-bg-start: rgba(37, 117, 252, 0.1);
+    --stoc-highlight-bg-end: rgba(106, 17, 203, 0.15);
+    --stoc-highlight-duration: 6s; /* हाइलाइट एनिमेशन अवधि */
+    --stoc-popup-highlight-duration: 6s; /* पॉपअप हाइलाइट के लिए अवधि (JS द्वारा उपयोग किया गया) */
+    /* अन्य */
+    --stoc-border-radius: 12px;
+    --stoc-font-main: 'Roboto', sans-serif;
+    --stoc-font-heading: 'Poppins', sans-serif;
+    --stoc-sidebar-width: 20vw;
+    --stoc-sidebar-min-width: 260px;
+    --stoc-sidebar-max-width: 320px;
+    --stoc-button-box-max-height-initial: 150px;
+    --stoc-button-box-max-height-expanded: 450px;
+    --stoc-close-icon-hover: #e74c3c;
+
+    /* *** लिस्ट आइटम बैकग्राउंड रंग *** */
+    --stoc-list-bg-h2: #e9d8fd; /* हल्का बैंगनी */
+    --stoc-list-bg-h3: #d6eafe; /* हल्का नीला */
+    --stoc-list-bg-h4: #cffafe; /* हल्का सियान */
+    --stoc-list-bg-h5: #ffebee; /* हल्का गुलाबी */
+    --stoc-list-bg-h6: #fff8e1; /* हल्का पीला/क्रीम */
+}
+
+/* --- बटन TOC कंटेनर और बटन --- */
+#stoc-toc-button-wrapper {
+    margin-bottom: 30px;
+    position: relative;
+    border-radius: var(--stoc-border-radius);
+    background: #fff;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e9ecef;
+    overflow: hidden;
+}
+
+#stoc-toc-button-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px;
+    cursor: pointer;
+    background: linear-gradient(60deg, #c94b4b, #f67280); /* लाल/गुलाबी ग्रेडिएंट */
+    color: var(--stoc-text-light);
+    user-select: none; /* Prevent text selection on click */
+}
+
+#stoc-toc-button-header h3 {
+    margin: 0;
+    font-family: var(--stoc-font-heading);
+    font-size: 1.3em;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.stoc-toc-button-title-text {
+    display: inline-block;
+    padding: 6px 20px;
+    border-radius: 40px;
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff0e6;
+    font-weight: 600;
+    font-size: 0.9em;
+    margin: 0 6px;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+#stoc-toc-button-header h3 .fa-book-open {
+    color: #ffe5d9;
+    font-size: 1.1em;
+}
+
+.stoc-toc-open-prompt-icon {
+    font-size: 0.9em;
+    display: inline-block;
+    animation: stoc-point-right-pulse 2s infinite ease-in-out;
+    color: #ffffff;
+    margin-left: 6px;
+}
+
+@keyframes stoc-point-right-pulse {
+    0%, 100% { transform: translateX(0); opacity: 0.9; }
+    50% { transform: translateX(6px); opacity: 1; }
+}
+
+#stoc-toc-button-toggle-icon {
+    font-size: 1.4em;
+    transition: transform 0.35s ease;
+    color: var(--stoc-text-light);
+}
+
+#stoc-toc-button-wrapper.collapsed #stoc-toc-button-toggle-icon {
+    transform: rotate(-180deg);
+}
+
+#stoc-toc-button-wrapper.expanded #stoc-toc-button-toggle-icon {
+    transform: rotate(0deg);
+}
+
+/* --- बटन TOC स्क्रॉलबॉक्स --- */
+#stoc-toc-button-scrollbox {
+    max-height: 0; /* डिफ़ॉल्ट रूप से बंद */
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 0 20px; /* पैडिंग केवल विस्तारित होने पर लागू होगी */
+    position: relative;
+    transition: max-height 0.55s ease-in-out, padding 0.55s ease-in-out, opacity 0.4s ease-out;
+    border-top: none; /* डिफ़ॉल्ट रूप से बॉर्डर नहीं */
+    opacity: 0;
+    background-image: radial-gradient(circle at 10% 15%, var(--stoc-color-1) 1px, transparent 1px),
+                      radial-gradient(circle at 85% 25%, var(--stoc-color-2) 1px, transparent 1px),
+                      radial-gradient(circle at 25% 85%, var(--stoc-color-3) 1px, transparent 1px),
+                      radial-gradient(circle at 70% 70%, var(--stoc-color-4) 1px, transparent 1px),
+                      radial-gradient(circle at 45% 45%, var(--stoc-color-5) 1px, transparent 1px);
+    background-size: 40px 40px, 50px 50px, 60px 60px, 45px 45px, 55px 55px;
+    background-repeat: repeat;
+    background-color: #ffffff;
+}
+
+#stoc-toc-button-wrapper.expanded #stoc-toc-button-scrollbox {
+    max-height: var(--stoc-button-box-max-height-expanded);
+    padding: 15px 20px;
+    border-top: 1px solid #e9ecef;
+    opacity: 1;
+    transition: max-height 0.55s ease-in-out, padding 0.55s ease-in-out, opacity 0.3s ease-in 0.1s, border-top 0s linear 0.1s; /* बॉर्डर तुरंत दिखाएँ */
+}
+
+#stoc-toc-button-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* --- फ्लोटिंग TOC आइकन --- */
+#stoc-floating-toc-icon {
+    position: fixed;
+    top: 50%;
+    right: 30px;
+    transform: translateY(-50%);
+    font-size: 3.2em; /* Emoji renders differently, adjust if needed */
+    color: var(--stoc-color-1);
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    z-index: 999;
+    transition: opacity 0.4s ease, visibility 0.4s ease, transform 0.4s ease, color 0.4s ease, right 0.4s ease;
+    text-shadow: 0 0 15px rgba(106, 17, 203, 0.7);
+    animation: stoc-pulse-glow-float-original 2.8s infinite ease-in-out;
+    opacity: 0;
+    visibility: hidden; /* डिफ़ॉल्ट रूप से छिपा हुआ */
+}
+
+#stoc-floating-toc-icon.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+#stoc-floating-toc-icon:hover {
+    transform: translateY(-50%) scale(1.2) rotate(12deg);
+    filter: brightness(1.35);
+}
+
+body.stoc-toc-sidebar-open #stoc-floating-toc-icon {
+    /* Move icon left when sidebar is open */
+    right: calc( clamp(var(--stoc-sidebar-min-width), var(--stoc-sidebar-width), var(--stoc-sidebar-max-width)) + 35px);
+}
+
+@keyframes stoc-pulse-glow-float-original {
+    0%, 100% {
+        transform: translateY(-50%) scale(1);
+        filter: drop-shadow(0 0 8px var(--stoc-color-1));
+        color: var(--stoc-color-1);
+    }
+    50% {
+        transform: translateY(-55%) scale(1.08);
+        filter: drop-shadow(0 0 20px var(--stoc-color-2));
+        color: var(--stoc-color-2);
+    }
+}
+
+/* --- फ्लोटिंग आइकन साइडबार --- */
+#stoc-toc-icon-sidebar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: clamp(var(--stoc-sidebar-min-width), var(--stoc-sidebar-width), var(--stoc-sidebar-max-width));
+    height: 100vh; /* Full viewport height */
+    background-color: #fff;
+    box-shadow: -10px 0 40px rgba(0, 0, 0, 0.22);
+    transform: translateX(100%); /* Start off-screen */
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1010;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Prevent content overflow */
+    border-left: 5px solid;
+    border-image: linear-gradient(180deg, var(--stoc-color-1), var(--stoc-color-2), var(--stoc-color-3)) 1;
+}
+
+#stoc-toc-icon-sidebar.visible {
+    transform: translateX(0); /* Slide in */
+}
+
+#stoc-toc-icon-sidebar-header {
+    padding: 18px 55px 18px 25px; /* Space for close button */
+    border-bottom: 1px solid #e0e5ec;
+    flex-shrink: 0; /* Prevent header from shrinking */
+    position: relative;
+    background: linear-gradient(135deg, rgba(106, 17, 203, 0.06), rgba(37, 117, 252, 0.06));
+}
+
+#stoc-toc-icon-sidebar-header h3 {
+    margin: 0;
+    font-family: var(--stoc-font-heading);
+    font-size: 1.35em;
+    font-weight: 700;
+    text-align: center;
+    color: var(--stoc-color-1);
+}
+
+#stoc-toc-sidebar-internal-close {
+    position: absolute;
+    top: 50%;
+    right: 18px;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    width: 34px;
+    height: 34px;
+    font-size: 1.3em;
+    color: #999;
+    cursor: pointer;
+    display: flex; /* Center icon */
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    transition: background-color 0.2s ease, color 0.2s ease, transform 0.3s ease;
+}
+
+#stoc-toc-sidebar-internal-close:hover {
+    background-color: rgba(0, 0, 0, 0.07);
+    color: var(--stoc-close-icon-hover);
+    transform: translateY(-50%) rotate(180deg);
+}
+
+#stoc-toc-icon-sidebar-scrollbox {
+    flex-grow: 1; /* Take remaining vertical space */
+    overflow-y: auto; /* Enable scrolling */
+    padding: 20px 15px 20px 20px;
+    position: relative; /* For scroll indicator positioning */
+    background-image: linear-gradient(45deg, rgba(106,17,203,0.04) 25%, transparent 25%),
+                      linear-gradient(-45deg, rgba(37,117,252,0.04) 25%, transparent 25%),
+                      linear-gradient(45deg, transparent 75%, rgba(0,198,255,0.04) 75%),
+                      linear-gradient(-45deg, transparent 75%, rgba(255,107,107,0.04) 75%),
+                      radial-gradient(circle at center, rgba(254,202,87,0.04) 10%, transparent 11%);
+    background-size: 45px 45px, 45px 45px, 45px 45px, 45px 45px, 100% 100%;
+    background-position: 0 0, 0 22.5px, 22.5px -22.5px, 22.5px 0px, 0 0;
+    background-color: #fdfdfe;
+}
+
+#stoc-toc-icon-sidebar-list {
+    list-style: none;
+    padding: 0 0 15vh 0; /* Padding at bottom */
+    margin: 0;
+}
+
+/* --- बाहरी साइडबार क्लोज बटन --- */
+#stoc-toc-sidebar-external-close {
+    position: fixed;
+    top: 50%;
+    left: 25px;
+    transform: translateY(-50%);
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, var(--stoc-color-4), var(--stoc-color-3));
+    border: none;
+    border-radius: 50%;
+    color: #fff;
+    font-size: 1.6em;
+    cursor: pointer;
+    box-shadow: 0 6px 18px rgba(255, 107, 107, 0.5);
+    z-index: 1011; /* Above sidebar overlay, below sidebar content */
+    display: flex; /* Center icon */
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s ease;
+    transform: translateY(-50%) scale(0.8);
+}
+
+#stoc-toc-sidebar-external-close.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(-50%) scale(1);
+}
+
+#stoc-toc-sidebar-external-close:hover {
+    transform: translateY(-50%) scale(1.15) rotate(-20deg);
+    box-shadow: 0 10px 25px rgba(255, 107, 107, 0.7);
+}
+
+/* --- साझा TOC लिस्ट आइटम स्टाइलिंग --- */
+.stoc-toc-list-item {
+    margin-bottom: 9px;
+    position: relative;
+    border-radius: 9px;
+    padding: 2px; /* Space for the gradient border */
+    background: linear-gradient(110deg, var(--stoc-color-1), var(--stoc-color-2), var(--stoc-color-3), var(--stoc-color-4), var(--stoc-color-5));
+    background-size: 400% 400%;
+    animation: stoc-gradient-bg-animation 9s ease infinite;
+    overflow: hidden;
+    transition: box-shadow 0.3s ease;
+}
+
+.stoc-toc-list-item:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.stoc-toc-list-item a {
+    display: flex;
+    align-items: flex-start; /* Align icon with first line of text */
+    gap: 12px;
+    padding: 13px 15px;
+    text-decoration: none;
+    border-radius: 7px; /* Inner radius */
+    position: relative;
+    z-index: 1; /* Above gradient border */
+    background-color: var(--stoc-list-bg-h2); /* डिफ़ॉल्ट बैकग्राउंड (H2 का उपयोग) */
+    color: var(--stoc-text-dark); /* ठोस टेक्स्ट रंग */
+    transition: transform 0.25s ease, background-color 0.2s ease;
+}
+
+.stoc-toc-list-item a:hover {
+    transform: scale(1.015);
+    background-color: #fff; /* होवर पर सफेद बैकग्राउंड */
+}
+
+/* क्लिक इफ़ेक्ट क्लास (बैकग्राउंड बदलें) */
+.stoc-toc-list-item a.stoc-toc-link-clicked {
+    transform: scale(1.03);
+    background-color: #eef; /* क्लिक पर हल्का नीला/बैंगनी टिंट */
+    transition: transform 0.1s ease-out, background-color 0.1s ease-out;
+}
+
+@keyframes stoc-gradient-bg-animation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.stoc-toc-list-item .stoc-toc-item-icon {
+    margin-top: 4px; /* Align vertically slightly better */
+    font-size: 1.1em;
+    width: 1.3em; /* Fixed width for alignment */
+    text-align: center;
+    opacity: 1;
+    transition: color 0.2s ease;
+    color: var(--stoc-color-1); /* डिफ़ॉल्ट रंग */
+    flex-shrink: 0; /* Prevent icon shrinking */
+}
+
+.stoc-toc-list-item a:hover .stoc-toc-item-icon,
+.stoc-toc-list-item a.stoc-toc-link-clicked .stoc-toc-item-icon {
+    color: var(--stoc-color-1); /* Keep color consistent on hover/click */
+}
+
+.stoc-toc-list-item .stoc-toc-item-text {
+    flex-grow: 1; /* Take remaining space */
+    font-size: 1.1em;
+    line-height: 1.65;
+    font-weight: 600;
+    font-family: var(--stoc-font-main);
+    white-space: normal; /* Allow text wrapping */
+    word-break: break-word; /* Break long words */
+}
+
+/* --- पदानुक्रम स्टाइलिंग (बैकग्राउंड, आइकन रंग, पैडिंग) --- */
+.stoc-toc-list-item.level-2 { padding-left: 0; }
+.stoc-toc-list-item.level-2 a { font-weight: 700; font-size: 1.15em; background-color: var(--stoc-list-bg-h2); }
+.stoc-toc-list-item.level-2 .stoc-toc-item-icon { color: var(--stoc-color-1); font-size: 1.15em; }
+
+.stoc-toc-list-item.level-3 { padding-left: 18px; }
+.stoc-toc-list-item.level-3 a { font-weight: 600; font-size: 1.1em; background-color: var(--stoc-list-bg-h3); }
+.stoc-toc-list-item.level-3 .stoc-toc-item-icon { color: var(--stoc-color-2); }
+
+.stoc-toc-list-item.level-4 { padding-left: 36px; }
+.stoc-toc-list-item.level-4 a { font-weight: 600; font-size: 1.05em; background-color: var(--stoc-list-bg-h4); }
+.stoc-toc-list-item.level-4 .stoc-toc-item-icon { color: var(--stoc-color-3); }
+
+.stoc-toc-list-item.level-5 { padding-left: 54px; }
+.stoc-toc-list-item.level-5 a { font-weight: 600; font-size: 1.05em; background-color: var(--stoc-list-bg-h5); }
+.stoc-toc-list-item.level-5 .stoc-toc-item-icon { color: var(--stoc-color-4); }
+
+.stoc-toc-list-item.level-6 { padding-left: 72px; }
+.stoc-toc-list-item.level-6 a { font-weight: 600; font-size: 1.05em; background-color: var(--stoc-list-bg-h6); }
+.stoc-toc-list-item.level-6 .stoc-toc-item-icon { color: var(--stoc-color-5); }
+
+/* --- साझा स्क्रॉल इंडिकेटर --- */
+.stoc-toc-scroll-indicator {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 2.1em;
+    opacity: 0; /* Hidden by default */
+    pointer-events: none; /* Not interactive */
+    color: var(--stoc-color-1);
+    text-shadow: 0 0 10px var(--stoc-color-3);
+    animation: stoc-bounce-pulse 2s infinite ease-in-out;
+    transition: opacity 0.4s ease;
+}
+
+.stoc-toc-scroll-indicator.visible {
+    opacity: 1; /* Show when needed */
+}
+
+@keyframes stoc-bounce-pulse {
+    0%, 100% { transform: translate(-50%, 0px) scale(1); opacity: 0.7; }
+    50% { transform: translate(-50%, -10px) scale(1.1); opacity: 1; }
+}
+
+/* कस्टम स्क्रॉलबार (Webkit & Firefox) */
+#stoc-toc-button-scrollbox::-webkit-scrollbar,
+#stoc-toc-icon-sidebar-scrollbox::-webkit-scrollbar {
+    width: 6px;
+}
+
+#stoc-toc-button-scrollbox::-webkit-scrollbar-track,
+#stoc-toc-icon-sidebar-scrollbox::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.04);
+    border-radius: 3px;
+}
+
+#stoc-toc-button-scrollbox::-webkit-scrollbar-thumb,
+#stoc-toc-icon-sidebar-scrollbox::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, var(--stoc-color-2), var(--stoc-color-3));
+    border-radius: 3px;
+}
+
+#stoc-toc-button-scrollbox,
+#stoc-toc-icon-sidebar-scrollbox {
+    scrollbar-width: thin;
+    scrollbar-color: var(--stoc-color-2) rgba(0, 0, 0, 0.04);
+}
+
+/* --- कंटेंट हाइलाइटिंग --- */
+@keyframes stoc-zoom-in-effect {
+    0% { transform: scale(0.98); opacity: 0.9; }
+    50% { transform: scale(1.02); opacity: 1; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.stoc-toc-target-heading {
+    position: relative; /* Needed for ::after */
+    color: var(--stoc-color-3) !important; /* Override theme color */
+    animation: stoc-zoom-in-effect 0.6s ease-out forwards;
+    padding-top: 5px; /* Space for highlight */
+    padding-bottom: 5px; /* Space for highlight */
+    border-bottom: 3px solid transparent; /* Placeholder for gradient border */
+    transition: color 0.3s ease;
+    text-shadow: 0 0 8px rgba(0, 210, 255, 0.5);
+}
+
+/* हाइलाइटेड हेडिंग के नीचे ग्रेडिएंट बॉर्डर एनिमेशन */
+.stoc-toc-target-heading::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2px; /* Position below the text */
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, var(--stoc-color-2), var(--stoc-color-1), var(--stoc-color-3), var(--stoc-color-2));
+    background-size: 200% 100%;
+    animation: stoc-gradient-bg-animation 2.5s linear infinite; /* Reuse gradient animation */
+    border-radius: 2px;
+    transition: opacity 0.5s ease var(--stoc-popup-highlight-duration); /* Delay fade out */
+    opacity: 1;
+}
+
+.stoc-toc-target-heading.fading-out::after {
+    opacity: 0; /* Fade out the border */
+}
+
+.stoc-toc-target-heading.fading-out {
+    /* Reset heading styles smoothly */
+    color: inherit !important; /* Revert to original theme color */
+    background: none;
+    animation: none;
+    text-shadow: none;
+    transform: scale(1);
+}
+
+/* हाइलाइटेड पैराग्राफ एनिमेशन */
+@keyframes stoc-pulse-background-alt {
+    0% { background-color: var(--stoc-highlight-bg-start); box-shadow: 0 4px 15px rgba(37, 117, 252, 0.1); }
+    50% { background-color: var(--stoc-highlight-bg-end); box-shadow: 0 6px 25px rgba(106, 17, 203, 0.18); }
+    100% { background-color: var(--stoc-highlight-bg-start); box-shadow: 0 4px 15px rgba(37, 117, 252, 0.1); }
+}
+
+.stoc-toc-target-paragraph {
+    padding: 20px;
+    margin-left: -20px; /* Extend highlight slightly outside content area */
+    margin-right: -20px;
+    border-radius: var(--stoc-border-radius);
+    animation: stoc-pulse-background-alt 2.8s ease-in-out infinite;
+    transition: background-color 0.5s ease, box-shadow 0.5s ease, padding 0.5s ease, margin 0.5s ease;
+    /* Delay transition until just before fade out starts */
+    transition-delay: calc(var(--stoc-popup-highlight-duration) - 0.5s);
+}
+
+.stoc-toc-target-paragraph.fading-out {
+    /* Smoothly revert paragraph styles */
+    background-color: transparent !important;
+    box-shadow: none !important;
+    padding: 0;
+    margin: 0;
+    animation: none;
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+    :root {
+        --stoc-sidebar-width: 75vw;
+        --stoc-sidebar-min-width: 250px;
+        --stoc-sidebar-max-width: 310px;
+    }
+
+    #stoc-floating-toc-icon {
+        font-size: 2.8em;
+        right: 20px;
+    }
+
+    body.stoc-toc-sidebar-open #stoc-floating-toc-icon {
+        right: calc( clamp(var(--stoc-sidebar-min-width), var(--stoc-sidebar-width), var(--stoc-sidebar-max-width)) + 25px);
+    }
+
+    #stoc-toc-sidebar-external-close {
+        width: 42px;
+        height: 42px;
+        font-size: 1.4em;
+        left: 18px;
+    }
+
+    #stoc-toc-button-header h3 { font-size: 1.2em; }
+    .stoc-toc-button-title-text { padding: 5px 16px; font-size: 0.88em; }
+    #stoc-toc-icon-sidebar-header h3 { font-size: 1.25em; }
+    #stoc-toc-icon-sidebar { width: clamp(var(--stoc-sidebar-min-width), var(--stoc-sidebar-width), var(--stoc-sidebar-max-width)); }
+
+    .stoc-toc-list-item a { padding: 11px 13px; }
+    .stoc-toc-list-item .stoc-toc-item-text { font-size: 1.05em; }
+    .stoc-toc-list-item.level-3,
+    .stoc-toc-list-item.level-4,
+    .stoc-toc-list-item.level-5,
+    .stoc-toc-list-item.level-6 {
+        padding-left: 15px; /* Reduce indentation on mobile */
+    }
+
+    .stoc-toc-target-paragraph {
+        padding: 15px;
+        margin-left: -15px;
+        margin-right: -15px;
+    }
+}
+
+/* एक्सेसिबिलिटी: कम मोशन प्राथमिकता */
+@media (prefers-reduced-motion: reduce) {
+    /* सामान्य ट्रांजिशन/एनिमेशन बंद करें */
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important; /* Disable smooth scrolling */
+        transition-delay: 0ms !important;
+    }
+
+    /* विशिष्ट एनिमेशन बंद करें */
+    .stoc-toc-open-prompt-icon,
+    #stoc-floating-toc-icon,
+    .stoc-toc-list-item, /* Gradient animation */
+    .stoc-toc-target-heading,
+    .stoc-toc-target-heading::after, /* Border gradient animation */
+    .stoc-toc-target-paragraph, /* Background pulse */
+    .stoc-toc-scroll-indicator, /* Bounce animation */
+    #stoc-toc-sidebar-internal-close,
+    #stoc-toc-sidebar-external-close,
+    .stoc-toc-list-item a {
+        animation: none !important;
+    }
+
+    /* कार्यात्मकता के लिए आवश्यक ट्रांज़िशन/ट्रांसफ़ॉर्म रखें (लेकिन तेज़ करें) */
+    #stoc-toc-button-toggle-icon { transition: transform 0.01ms !important; }
+    #stoc-toc-button-wrapper.collapsed #stoc-toc-button-toggle-icon { transform: rotate(-180deg); }
+    #stoc-toc-button-wrapper.expanded #stoc-toc-button-toggle-icon { transform: rotate(0deg); }
+
+    #stoc-toc-button-scrollbox { transition: max-height 0.01ms, padding 0.01ms, opacity 0.01ms !important; }
+    #stoc-toc-icon-sidebar { transition: transform 0.01ms !important; }
+    #stoc-toc-sidebar-external-close { transition: opacity 0.01ms, visibility 0.01ms, transform 0.01ms !important; }
+    #stoc-toc-target-heading::after { transition: opacity 0.01ms !important; } /* Faster fade out */
+    .stoc-toc-target-paragraph { transition: background-color 0.01ms, box-shadow 0.01ms, padding 0.01ms, margin 0.01ms !important; }
+
+    /* होवर/क्लिक पर सूक्ष्म परिवर्तन रखें (गति के बिना) */
+    #stoc-toc-button-header:hover { background: #c0392b; } /* Solid color instead of gradient shift */
+    .stoc-toc-list-item a:hover {
+        transform: none !important; /* Remove scale */
+        background-color: #f8f9fa !important; /* Slightly different hover background */
+    }
+    .stoc-toc-list-item a.stoc-toc-link-clicked {
+        transform: none !important; /* Remove scale */
+        background-color: #eef !important; /* Keep click background */
+    }
+    #stoc-toc-sidebar-internal-close:hover {
+        background-color: rgba(0, 0, 0, 0.07) !important;
+        color: var(--stoc-close-icon-hover) !important;
+        transform: translateY(-50%) !important; /* Remove rotation */
+    }
+    #stoc-toc-sidebar-external-close:hover {
+        transform: translateY(-50%) scale(1.05) !important; /* Less scale, no rotation */
+        box-shadow: 0 8px 20px rgba(255, 107, 107, 0.6) !important;
+    }
+    #stoc-floating-toc-icon:hover {
+        transform: translateY(-50%) !important; /* Remove scale/rotation */
+        filter: brightness(1.1) !important; /* Subtle brightness */
+    }
+}
+
+/* --- पोस्ट कंटेंट हेडिंग्स के लिए बेसिक स्टाइल --- */
+/* इन्हें अपनी ब्लॉगर थीम के हेडिंग्स के साथ बेहतर एकीकरण के लिए एडजस्ट करें */
+/* महत्वपूर्ण: ये सेलेक्टर सीधे आपकी पोस्ट सामग्री को लक्षित करते हैं */
+.post-body h1, /* Consider if you want H1 in TOC or styled */
+.post-body h2,
+.post-body h3,
+.post-body h4,
+.post-body h5,
+.post-body h6 {
+    font-family: var(--stoc-font-heading); /* Optional: Use TOC heading font */
+    /* Add scroll margin top to account for fixed headers/admin bars */
+    /* Adjust the value (e.g., 80px) based on your theme's fixed elements */
+    scroll-margin-top: 80px;
+    /* Ensure some padding for the highlight effect */
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+/* Optional: Apply subtle theme colors to headings for consistency */
+/* Uncomment and adjust if desired */
+/*
+.post-body h1 { color: var(--stoc-color-1); }
+.post-body h2 { color: var(--stoc-color-2); }
+.post-body h3 { color: var(--stoc-color-3); }
+.post-body h4 { color: var(--stoc-color-4); }
+.post-body h5 { color: var(--stoc-color-5); }
+.post-body h6 { color: var(--stoc-text-muted); }
+*/
+
+/* --- End of Stylish TOC CSS --- */
