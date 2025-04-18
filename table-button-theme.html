@@ -1,0 +1,30 @@
+<!-- ======================================== -->
+<!-- ==== स्टाइलिश TOC बटन रैपर START (थीम-वाइड) ==== -->
+<!-- उद्देश्य: सभी पोस्ट पेजों पर स्वचालित रूप से पोस्ट कंटेंट के ऊपर बटन TOC जोड़ना। -->
+<!-- स्थान: ब्लॉगर थीम HTML में, <data:post.body/> टैग से ठीक पहले। -->
+<!-- ======================================== -->
+
+<b:if cond='data:view.isPost'>
+    <div class="stoc-toc-container"> <!-- Optional container -->
+        <div id="stoc-toc-button-wrapper" class="collapsed">
+            <div id="stoc-toc-button-header" role="button" tabindex="0" aria-expanded="false" aria-controls="stoc-toc-button-scrollbox">
+                <h3 id="stoc-toc-button-header-title">
+                    <i class="fas fa-book-open" aria-hidden="true"></i>
+                    <span class="stoc-toc-button-title-text">सार संग्रह</span>
+                    <i class="fas fa-hand-point-right stoc-toc-open-prompt-icon" aria-hidden="true"></i>
+                </h3>
+                <i id="stoc-toc-button-toggle-icon" class="fas fa-chevron-down" aria-hidden="true"></i>
+            </div>
+            <div id="stoc-toc-button-scrollbox" role="region" aria-labelledby="stoc-toc-button-header-title">
+                <ul id="stoc-toc-button-list">
+                    <!-- जावास्क्रिप्ट TOC आइटम्स यहाँ डालेगा -->
+                </ul>
+                <div id="stoc-button-scroll-indicator" class="stoc-toc-scroll-indicator">
+                     <i class="fas fa-angles-down" aria-hidden="true"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</b:if>
+
+<!-- ==== स्टाइलिश TOC बटन रैपर END (थीम-वाइड) डाटा पोस्ट बाडी के ऊपर रखें==== -->
