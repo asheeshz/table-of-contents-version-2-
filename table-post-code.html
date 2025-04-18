@@ -1,0 +1,30 @@
+<!-- =========================================================== -->
+<!-- ==== स्टाइलिश TOC बटन रैपर START (प्रति-पोस्ट) ==== -->
+<!-- उद्देश्य: किसी विशिष्ट ब्लॉगर पोस्ट के HTML व्यू में डालने के लिए बटन TOC कोड। -->
+<!-- स्थान: ब्लॉगर पोस्ट एडिटर के HTML व्यू में, आमतौर पर परिचय पैराग्राफ के बाद और पहली H2 हेडिंग से पहले। -->
+<!-- नोट: इस विधि का उपयोग करने से पहले, थीम में फ्लोटिंग/साइडबार HTML, CSS और JS का इंस्टॉल होना आवश्यक है। -->
+<!-- =========================================================== -->
+
+<div class="stoc-toc-container"> <!-- Optional container -->
+  <div id="stoc-toc-button-wrapper" class="collapsed"> <!-- Note: Removed extra toc-button-wrapper class from original -->
+    <div id="stoc-toc-button-header" role="button" tabindex="0" aria-expanded="false" aria-controls="stoc-toc-button-scrollbox">
+      <h3 id="stoc-toc-button-header-title"> <!-- Note: Removed extra toc-button-title class from original -->
+        <i class="fas fa-book-open" aria-hidden="true"></i> <!-- Note: Removed extra toc-button-icon class -->
+        <span class="stoc-toc-button-title-text">सार संग्रह</span>
+        <i class="fas fa-hand-point-right stoc-toc-open-prompt-icon" aria-hidden="true"></i> <!-- Note: Removed extra toc-button-prompt-icon class -->
+      </h3>
+      <i id="stoc-toc-button-toggle-icon" class="fas fa-chevron-down"></i> <!-- Note: Removed extra toc-button-toggle-icon class -->
+    </div>
+    <div id="stoc-toc-button-scrollbox" role="region" aria-labelledby="stoc-toc-button-header-title"> <!-- Note: Removed extra toc-button-scrollbox class -->
+      <ul id="stoc-toc-button-list"> <!-- Note: Removed extra toc-list class -->
+        <!-- जावास्क्रिप्ट TOC आइटम्स यहाँ डालेगा -->
+        <!-- <li>लोड हो रहा है...</li> You might not need this placeholder -->
+      </ul>
+      <div id="stoc-button-scroll-indicator" class="stoc-toc-scroll-indicator"> <!-- Note: Removed extra scroll-indicator class -->
+        <i class="fas fa-angles-down" aria-hidden="true"></i>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==== स्टाइलिश TOC बटन रैपर END (प्रति-पोस्ट) ==== -->
