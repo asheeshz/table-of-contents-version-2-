@@ -1,11 +1,11 @@
 /* ==========================================================================
-   Vedic Bloom TOC CSS for Blogger (v4.7 - Fixed Highlighting, Scroll Indicator, BG Pattern)
-   Description: Ensured content highlighting and scroll indicator functionality.
-                Corrected button TOC background pattern application.
+   Vedic Bloom TOC CSS for Blogger (v4.8 - Fixed Visibility & Layout Issues)
+   Description: Corrected display issues for Floating TOC and Button Wrapper.
+                Ensured button header is visible and scrollbox collapses.
    JS Compatibility: Maintained.
    ========================================================================== */
 
-/* --- Global Variables & Base Styles (v4.6 से, कुछ समायोजन) --- */
+/* --- Global Variables & Base Styles (पहले जैसे) --- */
 :root {
     /* Vedic Color Palette */
     --stoc-pink-very-deep: #A0144F;
@@ -13,12 +13,12 @@
     --stoc-ruby-highlight: #D32F2F;
     --stoc-saffron: #FFA000;
     --stoc-gold-text: #FFD700;
-    --stoc-gold-pattern: rgba(255, 215, 0, 0.22); /* पैटर्न थोड़ा और सूक्ष्म */
+    --stoc-gold-pattern: rgba(255, 215, 0, 0.22);
     --stoc-gold-pattern-strong: rgba(255, 215, 0, 0.35);
     --stoc-gold-highlight: #FFEE58;
     --stoc-gold-border: #FFB300;
     --stoc-copper: #A1887F;
-    --stoc-text-glow: rgba(255, 223, 186, 0.3); /* चमक थोड़ी कम */
+    --stoc-text-glow: rgba(255, 223, 186, 0.3);
 
     /* Text & Background */
     --stoc-text-light-on-dark: #FFFDE7;
@@ -41,11 +41,10 @@
     --stoc-transition-reveal: 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
 
     /* Highlight Effect - For JS to use */
-    --stoc-highlight-duration: 3s; /* 3000ms */
-    --stoc-popup-highlight-duration: 3s; /* Legacy, ensure JS uses the one above */
+    --stoc-highlight-duration: 3s;
+    --stoc-popup-highlight-duration: 3s;
 
-    /* स्क्रॉल इंडिकेटर के लिए रंग */
-    --stoc-scroll-indicator-color: var(--stoc-gold-text); /* v1.4 से --stoc-color-1 जैसा */
+    --stoc-scroll-indicator-color: var(--stoc-gold-text);
 }
 
 /* Google Fonts Import (पहले जैसे) */
@@ -63,33 +62,87 @@
     line-height: 1.45;
 }
 
-/* --- Design Patterns (पहले जैसे) --- */
-/* डिज़ाइन 1: फ्लोटिंग साइडबार के लिए (जाल/बेलबूटे जैसा) */
-#stoc-toc-icon-sidebar { /* पैटर्न अब सीधे साइडबार पर लागू होगा */
-    background-color: var(--stoc-ruby-deep);
-    position: relative; /* ::before के लिए */
+/* --- Collapsible Button TOC --- */
+#stoc-toc-button-wrapper {
+    margin-bottom: 25px; position: relative; border-radius: var(--stoc-border-radius);
+    border: 3px solid transparent;
+    background-image: linear-gradient(var(--stoc-bg-light), var(--stoc-bg-light)),
+                      linear-gradient(145deg, var(--stoc-gold-border), var(--stoc-saffron), var(--stoc-ruby-deep), var(--stoc-saffron), var(--stoc-gold-border));
+    background-origin: border-box; background-clip: content-box, border-box;
+    box-shadow: 0 6px 18px rgba(194, 24, 91, 0.25), 0 2px 8px rgba(255, 160, 0, 0.15);
+    /* overflow: hidden; <- इसे हटाया गया ताकि शैडो सही दिखे, स्क्रॉलबॉक्स खुद overflow मैनेज करेगा */
+    transition: box-shadow var(--stoc-transition-medium), transform var(--stoc-transition-medium);
 }
-#stoc-toc-icon-sidebar::before {
-    content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-    background-image:
-        repeating-linear-gradient(45deg, transparent, transparent 10px, var(--stoc-gold-pattern) 10px, var(--stoc-gold-pattern) 11.5px),
-        repeating-linear-gradient(-45deg, transparent, transparent 10px, var(--stoc-gold-pattern) 10px, var(--stoc-gold-pattern) 11.5px),
-        radial-gradient(circle at center, var(--stoc-gold-pattern-strong) 1px, transparent 1.5px);
-    background-size: 30px 30px, 30px 30px, 15px 15px;
-    background-position: 0 0, 0 0, 0 0; opacity: 0.7; /* थोड़ी कम ओपेसिटी */
-    pointer-events: none; mix-blend-mode: overlay; z-index: 0;
-    border-radius: 0; /* साइडबार में कोई रेडियस नहीं */
+#stoc-toc-button-wrapper:hover {
+    box-shadow: 0 8px 25px rgba(194, 24, 91, 0.35), 0 3px 12px rgba(255, 160, 0, 0.25);
+    transform: translateY(-3px) scale(1.015);
 }
-#stoc-toc-icon-sidebar > * { /* साइडबार की सामग्री पैटर्न के ऊपर हो */
-    position: relative; z-index: 1;
+#stoc-toc-button-wrapper::after { /* अलंकृत बॉर्डर */
+    content: ''; position: absolute; top: 3px; left: 3px; right: 3px; bottom: 3px;
+    border-radius: calc(var(--stoc-border-radius) - 3px);
+    border: 1.5px dotted var(--stoc-gold-text); opacity: 0.5;
+    pointer-events: none; z-index: 1; /* हेडर और स्क्रॉलबॉक्स के पीछे */
 }
 
-/* डिज़ाइन 2: बटन रैपर TOC स्क्रॉलबॉक्स के लिए (मंडला/बूटी जैसा) */
-#stoc-toc-button-scrollbox {
-    background-color: var(--stoc-pink-very-deep);
-    position: relative; /* ::before के लिए */
-    z-index: 1; /* हेडर के नीचे */
+#stoc-toc-button-header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 14px 18px; cursor: pointer; color: var(--stoc-text-dark-on-light);
+    user-select: none; position: relative; z-index: 2; /* रैपर के ::after के ऊपर */
+    background-color: var(--stoc-bg-light);
+    border-top-left-radius: calc(var(--stoc-border-radius) - 3px); /* बाहरी बॉर्डर से मैच करे */
+    border-top-right-radius: calc(var(--stoc-border-radius) - 3px);
+    text-shadow: 0 0 5px var(--stoc-text-glow); transition: background-color var(--stoc-transition-fast);
 }
+#stoc-toc-button-header:hover { background-color: var(--stoc-bg-medium); }
+#stoc-toc-button-header h3 {
+    margin: 0; font-family: var(--stoc-font-heading); font-size: 1.3em; font-weight: 700;
+    display: flex; align-items: center; gap: 12px;
+}
+#stoc-toc-button-header h3 .fa-book-open {
+    color: var(--stoc-saffron); font-size: 1.4em;
+    filter: drop-shadow(0 0 6px var(--stoc-saffron));
+    transition: transform var(--stoc-transition-medium), color var(--stoc-transition-fast);
+}
+#stoc-toc-button-header:hover h3 .fa-book-open { transform: rotate(8deg) scale(1.15); color: var(--stoc-pink-very-deep); }
+.stoc-toc-button-title-text { font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; font-size: 0.9em; color: var(--stoc-text-dark-on-light); padding: 2px 0; }
+.stoc-toc-open-prompt-icon {
+    font-size: 1.1em; color: var(--stoc-text-muted); margin-left: 10px; opacity: 0;
+    transition: opacity var(--stoc-transition-fast) 0.2s, transform var(--stoc-transition-fast);
+    transform: translateX(-5px);
+}
+#stoc-toc-button-wrapper.collapsed .stoc-toc-open-prompt-icon { opacity: 1; transform: translateX(0); animation: stoc-prompt-pulse 2s infinite ease-in-out 0.5s; }
+@keyframes stoc-prompt-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
+#stoc-toc-button-toggle-icon {
+    font-size: 1.5em; color: var(--stoc-saffron);
+    transition: transform var(--stoc-transition-medium) 0.1s, color var(--stoc-transition-fast);
+    padding: 5px; border-radius: 50%;
+}
+#stoc-toc-button-header:hover #stoc-toc-button-toggle-icon { color: var(--stoc-pink-very-deep); background-color: rgba(255,160,0,0.1); }
+#stoc-toc-button-wrapper.collapsed #stoc-toc-button-toggle-icon { transform: rotate(0deg); }
+#stoc-toc-button-wrapper.expanded #stoc-toc-button-toggle-icon { transform: rotate(-180deg); }
+
+#stoc-toc-button-scrollbox {
+    max-height: 0;
+    overflow: hidden; /* <<< महत्वपूर्ण: सामग्री को छिपाने के लिए जब max-height: 0 हो */
+    padding: 0 8px;
+    position: relative;
+    z-index: 2; /* रैपर के ::after के ऊपर */
+    opacity: 0;
+    background-color: var(--stoc-pink-very-deep);
+    box-shadow: inset 0 5px 12px rgba(0,0,0,0.2), inset 0 -3px 8px rgba(0,0,0,0.15);
+    transform: perspective(800px) rotateX(-95deg) translateY(-60%);
+    transform-origin: top center;
+    transition: max-height var(--stoc-transition-reveal) 0.1s,
+                padding var(--stoc-transition-reveal) 0.1s,
+                opacity calc(var(--stoc-transition-reveal) * 0.5) ease-in 0.25s,
+                transform var(--stoc-transition-reveal) cubic-bezier(0.23, 1, 0.32, 1),
+                visibility 0s linear calc(var(--stoc-transition-reveal) * 0.75); /* अदृश्य होने में देरी */
+    border-top: 1px solid rgba(255,255,255,0.1);
+    border-bottom-left-radius: calc(var(--stoc-border-radius) - 3px);
+    border-bottom-right-radius: calc(var(--stoc-border-radius) - 3px);
+    visibility: hidden; /* <<< महत्वपूर्ण: प्रारंभ में छिपा हुआ */
+}
+/* डिज़ाइन 2: बटन रैपर TOC के लिए */
 #stoc-toc-button-scrollbox::before {
     content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
     background-image:
@@ -100,85 +153,125 @@
     background-position: center center, 0 0, 7.5px 7.5px;
     opacity: 0.8; /* थोड़ी कम ओपेसिटी */
     pointer-events: none;
-    border-radius: inherit; /* स्क्रॉलबॉक्स का रेडियस */
-    mix-blend-mode: luminosity;
-    z-index: -1; /* सामग्री के पीछे */
+    border-radius: inherit;
+    mix-blend-mode: luminosity; /* या 'soft-light' */
+    z-index: -1;
 }
 
-
-/* --- Collapsible Button TOC (पहले जैसे, z-index समायोजित) --- */
-#stoc-toc-button-wrapper {
-    /* ... (v4.6 से स्टाइल) ... */
-    overflow: hidden; /* सुनिश्चित करें कि ::before अंदर रहे */
+#stoc-toc-button-wrapper.expanded #stoc-toc-button-scrollbox {
+    max-height: var(--stoc-button-box-max-height-expanded); padding: 12px 8px; opacity: 1;
+    transform: perspective(800px) rotateX(0deg) translateY(0%); overflow-y: auto;
+    visibility: visible; /* <<< महत्वपूर्ण: खुलने पर दृश्यमान */
+    transition-delay: 0s, 0s, 0s, 0s, 0s; /* खुलने पर कोई देरी नहीं */
 }
-#stoc-toc-button-wrapper::after { /* अलंकृत बॉर्डर */
-    /* ... (v4.6 से स्टाइल) ... */
-    z-index: 3; /* हेडर के ऊपर, स्क्रॉलबॉक्स पैटर्न के भी ऊपर */
-}
-#stoc-toc-button-wrapper > div:not(#stoc-toc-button-scrollbox) { /* हेडर */
-    position: relative; z-index: 2;
-}
-#stoc-toc-button-header { /* ... (v4.6 से स्टाइल) ... */ }
-#stoc-toc-button-header h3 { /* ... */ }
-#stoc-toc-button-header h3 .fa-book-open { /* ... */ }
-.stoc-toc-button-title-text { /* ... */ }
-.stoc-toc-open-prompt-icon { /* ... */ }
-#stoc-toc-button-toggle-icon { /* ... */ }
-
-#stoc-toc-button-scrollbox {
-    /* ... (v4.6 से स्टाइल, background-color और ::before ऊपर परिभाषित) ... */
-    border-bottom-left-radius: calc(var(--stoc-border-radius) - 3px); /* महत्वपूर्ण है overflow:hidden के साथ */
-    border-bottom-right-radius: calc(var(--stoc-border-radius) - 3px);
-}
-#stoc-toc-button-wrapper.expanded #stoc-toc-button-scrollbox { /* ... (v4.6 से स्टाइल) ... */ }
-#stoc-toc-button-list { /* ... (v4.6 से स्टाइल) ... */ }
+#stoc-toc-button-list { list-style: none; padding: 0 5px; margin: 0; }
 
 
-/* --- Floating TOC Icon & Sidebar (पहले जैसे, ::before ऊपर परिभाषित) --- */
-#stoc-floating-toc-icon { /* ... (v4.6 से स्टाइल) ... */ }
+/* --- Floating TOC Icon & Sidebar (Restored and Styled) --- */
+#stoc-floating-toc-icon {
+    position: fixed;
+    top: 50%;
+    right: -70px; /* प्रारंभ में ऑफ-स्क्रीन */
+    transform: translateY(-50%);
+    width: 56px;
+    height: 56px;
+    background: linear-gradient(145deg, var(--stoc-ruby-deep), var(--stoc-saffron));
+    color: var(--stoc-text-light-on-dark);
+    border: 2.5px solid var(--stoc-gold-text);
+    border-radius: 50%;
+    font-size: 1.4em;
+    cursor: pointer;
+    z-index: 1001; /* सुनिश्चित करें कि यह अन्य सामग्री के ऊपर है */
+    box-shadow: 0 0 12px var(--stoc-saffron), 0 0 20px var(--stoc-ruby-deep), inset 0 0 7px rgba(255,255,255,0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: right var(--stoc-transition-medium), transform var(--stoc-transition-medium),
+                opacity var(--stoc-transition-medium) 0s, visibility 0s linear var(--stoc-transition-medium), /* visibility को छिपाने में देरी */
+                background var(--stoc-transition-fast), box-shadow var(--stoc-transition-fast);
+    opacity: 0;
+    visibility: hidden; /* प्रारंभ में छिपा हुआ */
+    animation: stoc-float-gently 3.5s infinite ease-in-out;
+}
+#stoc-floating-toc-icon.visible { /* JS द्वारा यह क्लास जोड़ी जाएगी */
+    right: 20px;
+    opacity: 1;
+    visibility: visible;
+    transition-delay: 0s, 0s, 0s, 0s, 0s, 0s; /* प्रकट होने पर कोई देरी नहीं */
+}
+#stoc-floating-toc-icon:hover {
+    transform: translateY(-50%) scale(1.12) rotate(12deg);
+    box-shadow: 0 0 18px var(--stoc-saffron), 0 0 30px var(--stoc-ruby-deep), inset 0 0 10px rgba(255,255,255,0.4);
+    border-color: var(--stoc-gold-highlight);
+}
+body.stoc-toc-sidebar-open #stoc-floating-toc-icon { /* JS द्वारा body में क्लास जोड़ी जाएगी */
+    right: calc(var(--stoc-sidebar-width) + 25px);
+    transform: translateY(-50%) rotate(370deg);
+    background: linear-gradient(145deg, var(--stoc-saffron), var(--stoc-gold-text));
+    border-color: var(--stoc-ruby-deep);
+}
+@keyframes stoc-float-gently {
+    0%, 100% { transform: translateY(-50%) rotate(-3deg); }
+    50% { transform: translateY(-52%) rotate(5deg); }
+}
+
 #stoc-toc-icon-sidebar {
-    /* ... (v4.6 से स्टाइल, background-color और ::before ऊपर परिभाषित) ... */
-    overflow: hidden; /* ::before को क्लिप करने के लिए */
+    position: fixed; top: 0; right: 0; width: var(--stoc-sidebar-width); height: 100vh;
+    background-color: var(--stoc-ruby-deep);
+    box-shadow: -10px 0 30px rgba(78, 52, 46, 0.3);
+    transform: translateX(100%); /* प्रारंभ में ऑफ-स्क्रीन */
+    transition: transform var(--stoc-transition-long);
+    z-index: 1010; /* फ्लोटिंग आइकन के ऊपर */
+    display: flex; flex-direction: column; overflow: hidden;
+    border-left: 4px solid;
+    border-image: linear-gradient(to bottom, var(--stoc-gold-border), var(--stoc-saffron) 30%, var(--stoc-ruby-highlight) 70%, var(--stoc-ruby-deep)) 1;
+    visibility: hidden; /* <<< महत्वपूर्ण: JS द्वारा .visible क्लास से नियंत्रित होगा */
 }
+/* डिज़ाइन 1: फ्लोटिंग साइडबार के लिए */
+#stoc-toc-icon-sidebar::before {
+    content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    background-image:
+        repeating-linear-gradient(45deg, transparent, transparent 10px, var(--stoc-gold-pattern) 10px, var(--stoc-gold-pattern) 11.5px),
+        repeating-linear-gradient(-45deg, transparent, transparent 10px, var(--stoc-gold-pattern) 10px, var(--stoc-gold-pattern) 11.5px),
+        radial-gradient(circle at center, var(--stoc-gold-pattern-strong) 1px, transparent 1.5px);
+    background-size: 30px 30px, 30px 30px, 15px 15px;
+    background-position: 0 0, 0 0, 0 0; opacity: 0.7; pointer-events: none;
+    mix-blend-mode: overlay; z-index: 0;
+}
+#stoc-toc-icon-sidebar > * { position: relative; z-index: 1; }
+
+#stoc-toc-icon-sidebar.visible { /* JS द्वारा यह क्लास जोड़ी जाएगी */
+    transform: translateX(0);
+    visibility: visible; /* <<< महत्वपूर्ण */
+}
+
 #stoc-toc-icon-sidebar-header { /* ... (v4.6 से स्टाइल) ... */ }
 #stoc-toc-sidebar-internal-close { /* ... (v4.6 से स्टाइल) ... */ }
-#stoc-toc-icon-sidebar-scrollbox {
-    flex-grow: 1; overflow-y: auto; padding: 15px 5px 15px 18px;
-    /* नोट: साइडबार स्क्रॉलबॉक्स का अपना ::before पैटर्न नहीं होगा, यह पैरेंट (#stoc-toc-icon-sidebar) से इनहेरिट करेगा */
-    background-color: transparent; /* पैरेंट का पैटर्न दिखने दें */
-}
+#stoc-toc-icon-sidebar-scrollbox { /* ... (v4.6 से स्टाइल) ... */ }
 #stoc-toc-icon-sidebar-list { /* ... (v4.6 से स्टाइल) ... */ }
 #stoc-toc-sidebar-external-close { /* ... (v4.6 से स्टाइल) ... */ }
+/* सुनिश्चित करें कि external-close का z-index साइडबार से ज़्यादा हो */
+#stoc-toc-sidebar-external-close { z-index: 1011; }
 
 
 /* --- Shared TOC List Item Styling (पहले जैसे) --- */
 /* ... (v4.6 से लिस्ट आइटम स्टाइल) ... */
-.stoc-toc-list-item a {
-    color: var(--stoc-gold-text);
-    text-shadow: 0 0 7px rgba(var(--stoc-saffron), 0.7), 1px 1px 1.5px rgba(0,0,0,0.4);
-}
 
 
 /* --- Hierarchy Styling (पहले जैसे) --- */
 /* ... (v4.6 से पदानुक्रम स्टाइल) ... */
 
 
-/* --- साझा स्क्रॉल इंडिकेटर (v1.4 से कार्यक्षमता, v4.6 से स्टाइल) --- */
+/* --- साझा स्क्रॉल इंडिकेटर (सुनिश्चित करें कि यह visible है) --- */
 .stoc-toc-scroll-indicator {
-    position: absolute;
-    bottom: 10px; /* थोड़ा ऊपर */
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 1.6em; /* थोड़ा बड़ा */
-    opacity: 0; /* JS द्वारा .visible क्लास से नियंत्रित होगा */
-    pointer-events: none;
-    color: var(--stoc-scroll-indicator-color); /* वेरिएबल का उपयोग */
-    text-shadow: 0 0 8px rgba(var(--stoc-saffron), 0.6); /* सुनहरी चमक */
+    position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
+    font-size: 1.6em; opacity: 0; /* JS द्वारा .visible से नियंत्रित */
+    pointer-events: none; color: var(--stoc-scroll-indicator-color);
+    text-shadow: 0 0 8px rgba(var(--stoc-saffron), 0.6);
     animation: stoc-bounce-pulse-vedic 2s infinite ease-in-out;
-    transition: opacity 0.4s ease;
-    z-index: 5; /* सुनिश्चित करें कि यह सूची के ऊपर है */
+    transition: opacity 0.4s ease; z-index: 5;
 }
-.stoc-toc-scroll-indicator.visible { /* यह क्लास JS द्वारा जोड़ी जाएगी */
+.stoc-toc-scroll-indicator.visible { /* JS द्वारा यह क्लास जोड़ी जाएगी */
     opacity: 0.85;
 }
 @keyframes stoc-bounce-pulse-vedic { /* v1.4 से stoc-bounce-pulse जैसा */
@@ -191,90 +284,65 @@
 /* ... (v4.6 से स्क्रॉलबार स्टाइल) ... */
 
 
-/* --- कंटेंट हाइलाइटिंग (v1.4 से कार्यक्षमता, v4.6 से स्टाइल समायोजित) --- */
-/* यह सुनिश्चित करना है कि JS द्वारा जोड़ी गई क्लास सही ढंग से काम करें */
-/* .stoc-toc-target-heading और .stoc-toc-target-paragraph को जावास्क्रिप्ट द्वारा जोड़ा जाएगा */
-
-/* हाइलाइटेड हेडिंग के लिए एनिमेशन */
-@keyframes stoc-highlight-heading-animation-vedic {
+/* --- कंटेंट हाइलाइटिंग (सुनिश्चित करें कि यह काम कर रहा है) --- */
+/* एनिमेशन परिभाषाएँ */
+@keyframes stoc-radiant-highlight-heading-vedic {
   0%, 100% {
-    text-shadow: 0 0 6px var(--stoc-gold-highlight), 0 0 12px var(--stoc-saffron), 0 0 2px var(--stoc-text-light-on-dark);
+    text-shadow: 0 0 6px var(--stoc-gold-highlight), 0 0 12px var(--stoc-saffron), 0 0 18px var(--stoc-ruby-highlight), 0 0 2px var(--stoc-text-light-on-dark);
     color: var(--stoc-ruby-highlight) !important;
-    transform: scale(1.01);
+    transform: scale(1.01); /* थोड़ा सा स्केल */
   }
   50% {
-    text-shadow: 0 0 10px var(--stoc-gold-highlight), 0 0 20px var(--stoc-saffron), 0 0 30px var(--stoc-ruby-highlight), 0 0 3px var(--stoc-text-light-on-dark);
+    text-shadow: 0 0 10px var(--stoc-gold-highlight), 0 0 20px var(--stoc-saffron), 0 0 30px var(--stoc-ruby-highlight), 0 0 40px var(--stoc-pink-very-deep), 0 0 3px var(--stoc-text-light-on-dark);
     color: var(--stoc-pink-very-deep) !important;
-    transform: scale(1.04);
+    transform: scale(1.04); /* थोड़ा और स्केल */
   }
 }
-
-/* हाइलाइटेड पैराग्राफ के लिए एनिमेशन */
-@keyframes stoc-highlight-paragraph-animation-vedic {
+@keyframes stoc-radiant-highlight-paragraph-bg-vedic {
   0%, 100% {
-    background-color: rgba(255, 224, 178, 0.2); /* हल्का केसरिया टिंट */
+    background-color: rgba(255, 202, 40, 0.15);
     box-shadow: 0 0 10px rgba(255,202,40,0.25), inset 0 0 6px rgba(255,160,0,0.15), 0 0 0 1.5px rgba(var(--stoc-gold-border), 0.4);
   }
   50% {
-    background-color: rgba(255, 224, 178, 0.35); /* थोड़ा और गहरा */
-    box-shadow: 0 0 20px rgba(255,202,40,0.45), inset 0 0 12px rgba(255,160,0,0.3), 0 0 0 2px rgba(var(--stoc-gold-border), 0.6);
+    background-color: rgba(255, 202, 40, 0.3);
+    box-shadow: 0 0 20px rgba(255,202,40,0.45), inset 0 0 12px rgba(255,160,0,0.25), 0 0 0 2px rgba(var(--stoc-gold-border), 0.6);
   }
 }
 
-/* यह क्लास JS द्वारा हेडिंग में जोड़ी जाएगी */
-.stoc-toc-target-heading {
-    position: relative; /* एनिमेशन के लिए */
-    padding: 3px 5px; margin: 0 -5px; border-radius: 4px;
-    animation-name: stoc-highlight-heading-animation-vedic;
-    animation-duration: var(--stoc-highlight-duration); /* CSS वेरिएबल का उपयोग */
-    animation-timing-function: ease-in-out;
-    animation-iteration-count: 1; /* एक बार चले */
-    animation-fill-mode: forwards; /* अंतिम स्थिति बनाए रखे */
-    transition: color 0.3s ease-out, text-shadow 0.3s ease-out, transform 0.3s ease-out; /* फीका पड़ने के लिए */
-    transition-delay: var(--stoc-highlight-duration); /* एनिमेशन खत्म होने के बाद ट्रांजिशन शुरू हो */
+/* JS द्वारा जोड़ी जाने वाली क्लास के साथ एनिमेशन को ट्रिगर करें */
+.stoc-toc-target-heading.stoc-highlight-active {
+    position: relative; padding: 3px 5px; margin: 0 -5px; border-radius: 4px;
+    animation: stoc-radiant-highlight-heading-vedic var(--stoc-highlight-duration) ease-in-out forwards; /* forwards महत्वपूर्ण है */
     will-change: text-shadow, color, transform;
 }
-/* यह क्लास JS द्वारा पैराग्राफ में जोड़ी जाएगी */
-.stoc-toc-target-paragraph {
-    position: relative;
-    padding: 12px; margin: 8px -12px; border-radius: var(--stoc-border-radius);
-    animation-name: stoc-highlight-paragraph-animation-vedic;
-    animation-duration: var(--stoc-highlight-duration);
-    animation-timing-function: ease-in-out;
-    animation-iteration-count: 1;
-    animation-fill-mode: forwards;
-    transition: background-color 0.3s ease-out, box-shadow 0.3s ease-out, padding 0.3s ease-out, margin 0.3s ease-out;
-    transition-delay: var(--stoc-highlight-duration);
+.stoc-toc-target-paragraph.stoc-highlight-active {
+    position: relative; padding: 12px; margin: 8px -12px; border-radius: var(--stoc-border-radius);
+    animation: stoc-radiant-highlight-paragraph-bg-vedic var(--stoc-highlight-duration) ease-in-out forwards; /* forwards महत्वपूर्ण है */
     will-change: background-color, box-shadow;
 }
 
-/* यह क्लास JS द्वारा हाइलाइट अवधि के बाद जोड़ी जाएगी ताकि स्टाइल रीसेट हो सकें */
+/* फेड-आउट के लिए (JS द्वारा हाइलाइट अवधि के बाद जोड़ा जाएगा) */
 .stoc-toc-target-heading.fading-out,
 .stoc-toc-target-paragraph.fading-out {
-    animation: none !important; /* चल रहे एनिमेशन को रोकें */
-    /* ट्रांजिशन के माध्यम से मूल स्थिति में लौटें */
+    animation: none !important; /* चल रहे एनिमेशन को तुरंत रोकें */
+    transition: color 0.5s ease-out, text-shadow 0.5s ease-out, transform 0.5s ease-out,
+                background-color 0.5s ease-out, box-shadow 0.5s ease-out,
+                padding 0.5s ease-out, margin 0.5s ease-out;
+    /* मूल स्थिति में वापस */
     color: inherit !important;
     text-shadow: none !important;
     transform: scale(1) !important;
     background-color: transparent !important;
     box-shadow: none !important;
-    padding: 0 !important; /* मूल पैडिंग पर रीसेट करें या हटा दें */
-    margin: 0 0 1em 0 !important; /* पैराग्राफ के लिए मूल मार्जिन */
 }
-.stoc-toc-target-heading.fading-out { margin: 0 !important; } /* हेडिंग के लिए मार्जिन रीसेट */
+.stoc-toc-target-paragraph.fading-out { padding: 0 !important; margin: 0 0 1em 0 !important; }
+.stoc-toc-target-heading.fading-out { padding: 0 !important; margin: 0 !important; }
 
 
 /* --- Responsive & Accessibility (पहले जैसे) --- */
-@media (max-width: 768px) { /* ... (v4.6 से स्टाइल) ... */ }
-@media (prefers-reduced-motion: reduce) { /* ... (v4.6 से स्टाइल) ... */ }
+/* ... */
 
 /* --- Post Content Headings (पहले जैसे) --- */
-.post-body h1, .post-body h2, .post-body h3,
-.post-body h4, .post-body h5, .post-body h6 {
-    font-family: var(--stoc-font-heading);
-    scroll-margin-top: 90px;
-    position: relative;
-    color: var(--stoc-text-dark-on-light);
-}
+/* ... */
 
 /* --- End of Vedic Bloom TOC CSS --- */
