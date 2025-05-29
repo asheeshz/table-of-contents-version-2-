@@ -1,50 +1,65 @@
 /* ==========================================================================
-   Vedic Bloom TOC CSS for Blogger (v4.8 - Fixed Visibility & Layout Issues)
-   Description: Corrected display issues for Floating TOC and Button Wrapper.
-                Ensured button header is visible and scrollbox collapses.
+   Vedic Bloom TOC CSS for Blogger (v5.0 - Royal Vedic Remaster)
+   Author: [आपका नाम/वेबसाइट वैकल्पिक]
+   Description: JavaScript संगतता बनाए रखते हुए बटन और साइडबार TOC के लिए पूरी तरह से नया शाही वैदिक डिज़ाइन।
+                बटन TOC: गहरा गुलाबी रैपर, माणिक रत्न आइटम।
+                साइडबार TOC: गहरा गुलाबी बैकग्राउंड, सुनहरे टेक्स्ट आइटम।
    JS Compatibility: Maintained.
    ========================================================================== */
 
-/* --- Global Variables & Base Styles (पहले जैसे) --- */
+/* --- Global Variables & Base Styles --- */
 :root {
-    /* Vedic Color Palette */
-    --stoc-pink-very-deep: #A0144F;
-    --stoc-ruby-deep: #A70404;
-    --stoc-ruby-highlight: #D32F2F;
-    --stoc-saffron: #FFA000;
-    --stoc-gold-text: #FFD700;
-    --stoc-gold-pattern: rgba(255, 215, 0, 0.22);
-    --stoc-gold-pattern-strong: rgba(255, 215, 0, 0.35);
-    --stoc-gold-highlight: #FFEE58;
-    --stoc-gold-border: #FFB300;
-    --stoc-copper: #A1887F;
-    --stoc-text-glow: rgba(255, 223, 186, 0.3);
+    /* शाही वैदिक रंग पैलेट (विस्तारित और संशोधित) */
+    --stoc-deep-pink-base: #B71C1C; /* गहरा गुलाबी (रूबी जैसा) - बटन रैपर और साइडबार के लिए */
+    --stoc-deep-pink-medium: #C62828;
+    --stoc-deep-pink-highlight: #D32F2F;
 
-    /* Text & Background */
+    --stoc-gold-deep-text: #B8860B; /* गहरा सुनहरा - बटन रैपर टेक्स्ट के लिए */
+    --stoc-gold-rich-text: #DAA520; /* समृद्ध सुनहरा - साइडबार टेक्स्ट के लिए */
+    --stoc-gold-border: #FFB300;
+    --stoc-gold-highlight: #FFD700; /* माणिक आइटम टेक्स्ट के लिए हल्का सुनहरा */
+    --stoc-gold-pattern-faint: rgba(255, 215, 0, 0.1); /* सूक्ष्म पैटर्न */
+    --stoc-gold-pattern-subtle: rgba(255, 215, 0, 0.2);
+
+    --stoc-ruby-gem-dark: #8A0000; /* माणिक आइटम के लिए */
+    --stoc-ruby-gem-medium: #A70404;
+    --stoc-ruby-gem-light: #C00000;
+
+    --stoc-cream-text-on-ruby: #FFF8DC; /* माणिक पर कॉर्नसिल्क जैसा टेक्स्ट */
+
+    --stoc-sidebar-item-bg: #FFFDF5; /* साइडबार आइटम के लिए हल्का बैकग्राउंड */
+
+    /* मूल रंग (आवश्यकतानुसार बनाए रखे गए) */
+    --stoc-saffron-dark: #E69100;
+    --stoc-saffron-medium: #FFA000;
+    --stoc-saffron-light: #FFCA28;
     --stoc-text-light-on-dark: #FFFDE7;
     --stoc-text-dark-on-light: #4E342E;
     --stoc-bg-light: #FFFDF5;
     --stoc-border-color-light: #FFCC80;
 
+
     /* Typography */
-    --stoc-font-main: 'Laila', 'Noto Sans Devanagari', serif;
-    --stoc-font-heading: 'Martel', 'Noto Serif Devanagari', serif;
+    --stoc-font-main: 'Laila', 'Noto Sans Devanagari', serif; /* संस्कृत जैसा फील */
+    --stoc-font-heading: 'Martel', 'Noto Serif Devanagari', serif; /* संस्कृत जैसा फील */
 
     /* Dimensions & Radius */
-    --stoc-border-radius: 10px;
-    --stoc-sidebar-width: 290px;
-    --stoc-button-box-max-height-expanded: 350px;
+    --stoc-border-radius: 12px; /* थोड़ा बड़ा */
+    --stoc-item-border-radius: 8px;
+    --stoc-sidebar-width: 295px;
+    --stoc-button-box-max-height-expanded: 380px;
 
     /* Transitions & Animations */
     --stoc-transition-fast: 0.25s ease-in-out;
     --stoc-transition-medium: 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-    --stoc-transition-reveal: 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+    --stoc-transition-reveal: 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
 
     /* Highlight Effect - For JS to use */
     --stoc-highlight-duration: 3s;
     --stoc-popup-highlight-duration: 3s;
 
-    --stoc-scroll-indicator-color: var(--stoc-gold-text);
+    --stoc-scroll-indicator-color: var(--stoc-gold-highlight); /* बटन TOC के लिए */
+    --stoc-sidebar-scroll-indicator-color: var(--stoc-gold-rich-text); /* साइडबार के लिए */
 }
 
 /* Google Fonts Import (पहले जैसे) */
@@ -62,287 +77,623 @@
     line-height: 1.45;
 }
 
-/* --- Collapsible Button TOC --- */
+/* --- Collapsible Button TOC (Royal Vedic Remaster) --- */
 #stoc-toc-button-wrapper {
-    margin-bottom: 25px; position: relative; border-radius: var(--stoc-border-radius);
-    border: 3px solid transparent;
-    background-image: linear-gradient(var(--stoc-bg-light), var(--stoc-bg-light)),
-                      linear-gradient(145deg, var(--stoc-gold-border), var(--stoc-saffron), var(--stoc-ruby-deep), var(--stoc-saffron), var(--stoc-gold-border));
-    background-origin: border-box; background-clip: content-box, border-box;
-    box-shadow: 0 6px 18px rgba(194, 24, 91, 0.25), 0 2px 8px rgba(255, 160, 0, 0.15);
-    /* overflow: hidden; <- इसे हटाया गया ताकि शैडो सही दिखे, स्क्रॉलबॉक्स खुद overflow मैनेज करेगा */
+    margin-bottom: 30px;
+    position: relative;
+    border-radius: var(--stoc-border-radius);
+    background: linear-gradient(135deg, var(--stoc-deep-pink-base) 0%, var(--stoc-deep-pink-medium) 60%, var(--stoc-deep-pink-highlight) 100%);
+    border: 3px solid var(--stoc-gold-border);
+    box-shadow: 0 8px 25px rgba(80, 0, 20, 0.5),
+                inset 0 0 18px rgba(255, 150, 150, 0.3),
+                0 0 0 2px var(--stoc-deep-pink-base);
     transition: box-shadow var(--stoc-transition-medium), transform var(--stoc-transition-medium);
+    overflow: hidden;
 }
 #stoc-toc-button-wrapper:hover {
-    box-shadow: 0 8px 25px rgba(194, 24, 91, 0.35), 0 3px 12px rgba(255, 160, 0, 0.25);
-    transform: translateY(-3px) scale(1.015);
+    box-shadow: 0 10px 30px rgba(80, 0, 20, 0.65),
+                inset 0 0 22px rgba(255, 160, 160, 0.4),
+                0 0 0 2px var(--stoc-deep-pink-base);
+    transform: translateY(-4px) scale(1.015);
 }
-#stoc-toc-button-wrapper::after { /* अलंकृत बॉर्डर */
-    content: ''; position: absolute; top: 3px; left: 3px; right: 3px; bottom: 3px;
-    border-radius: calc(var(--stoc-border-radius) - 3px);
-    border: 1.5px dotted var(--stoc-gold-text); opacity: 0.5;
-    pointer-events: none; z-index: 1; /* हेडर और स्क्रॉलबॉक्स के पीछे */
+/* अलंकृत बॉर्डर - रैपर के अंदर */
+#stoc-toc-button-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 5px; left: 5px; right: 5px; bottom: 5px;
+    border-radius: calc(var(--stoc-border-radius) - 6px);
+    border: 2px dotted var(--stoc-gold-deep-text);
+    opacity: 0.7;
+    pointer-events: none;
+    z-index: 1;
 }
 
 #stoc-toc-button-header {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 14px 18px; cursor: pointer; color: var(--stoc-text-dark-on-light);
-    user-select: none; position: relative; z-index: 2; /* रैपर के ::after के ऊपर */
-    background-color: var(--stoc-bg-light);
-    border-top-left-radius: calc(var(--stoc-border-radius) - 3px); /* बाहरी बॉर्डर से मैच करे */
-    border-top-right-radius: calc(var(--stoc-border-radius) - 3px);
-    text-shadow: 0 0 5px var(--stoc-text-glow); transition: background-color var(--stoc-transition-fast);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 20px;
+    cursor: pointer;
+    color: var(--stoc-gold-deep-text);
+    user-select: none;
+    position: relative;
+    z-index: 3;
+    background-color: transparent;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    transition: background-color var(--stoc-transition-fast);
 }
-#stoc-toc-button-header:hover { background-color: var(--stoc-bg-medium); }
+#stoc-toc-button-header:hover {
+    background-color: rgba(0,0,0,0.12);
+}
+
 #stoc-toc-button-header h3 {
-    margin: 0; font-family: var(--stoc-font-heading); font-size: 1.3em; font-weight: 700;
-    display: flex; align-items: center; gap: 12px;
+    margin: 0;
+    font-family: var(--stoc-font-heading);
+    font-size: 1.4em;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
+
 #stoc-toc-button-header h3 .fa-book-open {
-    color: var(--stoc-saffron); font-size: 1.4em;
-    filter: drop-shadow(0 0 6px var(--stoc-saffron));
+    color: var(--stoc-gold-deep-text);
+    font-size: 1.15em;
+    filter: drop-shadow(0 0 6px var(--stoc-gold-deep-text));
     transition: transform var(--stoc-transition-medium), color var(--stoc-transition-fast);
 }
-#stoc-toc-button-header:hover h3 .fa-book-open { transform: rotate(8deg) scale(1.15); color: var(--stoc-pink-very-deep); }
-.stoc-toc-button-title-text { font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; font-size: 0.9em; color: var(--stoc-text-dark-on-light); padding: 2px 0; }
+#stoc-toc-button-header:hover h3 .fa-book-open {
+    transform: rotate(12deg) scale(1.12);
+    color: var(--stoc-gold-highlight);
+}
+
+.stoc-toc-button-title-text {
+    font-weight: 600; /* थोड़ा कम बोल्ड, हेडर h3 से अलग */
+    letter-spacing: 0.8px;
+    font-size: 0.8em; /* H3 के सापेक्ष */
+    color: var(--stoc-gold-deep-text);
+    padding: 2px 0;
+    text-transform: uppercase;
+    opacity: 0.9;
+}
+
 .stoc-toc-open-prompt-icon {
-    font-size: 1.1em; color: var(--stoc-text-muted); margin-left: 10px; opacity: 0;
+    font-size: 1.15em;
+    color: var(--stoc-gold-deep-text);
+    opacity: 0.6;
+    margin-left: 12px;
     transition: opacity var(--stoc-transition-fast) 0.2s, transform var(--stoc-transition-fast);
-    transform: translateX(-5px);
+    transform: translateX(-6px);
 }
-#stoc-toc-button-wrapper.collapsed .stoc-toc-open-prompt-icon { opacity: 1; transform: translateX(0); animation: stoc-prompt-pulse 2s infinite ease-in-out 0.5s; }
-@keyframes stoc-prompt-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
+#stoc-toc-button-wrapper.collapsed .stoc-toc-open-prompt-icon {
+    opacity: 1;
+    transform: translateX(0);
+    animation: stoc-prompt-pulse 2.2s infinite ease-in-out 0.6s;
+}
+/* stoc-prompt-pulse keyframes v4.8 से अपरिवर्तित हैं, यहाँ पुनः उपयोग किया गया */
+
 #stoc-toc-button-toggle-icon {
-    font-size: 1.5em; color: var(--stoc-saffron);
+    font-size: 1.7em;
+    color: var(--stoc-gold-deep-text);
     transition: transform var(--stoc-transition-medium) 0.1s, color var(--stoc-transition-fast);
-    padding: 5px; border-radius: 50%;
+    padding: 5px;
+    border-radius: 50%;
 }
-#stoc-toc-button-header:hover #stoc-toc-button-toggle-icon { color: var(--stoc-pink-very-deep); background-color: rgba(255,160,0,0.1); }
-#stoc-toc-button-wrapper.collapsed #stoc-toc-button-toggle-icon { transform: rotate(0deg); }
-#stoc-toc-button-wrapper.expanded #stoc-toc-button-toggle-icon { transform: rotate(-180deg); }
+#stoc-toc-button-header:hover #stoc-toc-button-toggle-icon {
+    color: var(--stoc-gold-highlight);
+    background-color: rgba(var(--stoc-gold-deep-text), 0.15);
+}
+/* टॉगल आइकन रोटेशन v4.8 से अपरिवर्तित */
 
 #stoc-toc-button-scrollbox {
     max-height: 0;
-    overflow: hidden; /* <<< महत्वपूर्ण: सामग्री को छिपाने के लिए जब max-height: 0 हो */
-    padding: 0 8px;
+    overflow: hidden;
+    padding: 0 12px;
     position: relative;
-    z-index: 2; /* रैपर के ::after के ऊपर */
+    z-index: 2;
     opacity: 0;
-    background-color: var(--stoc-pink-very-deep);
-    box-shadow: inset 0 5px 12px rgba(0,0,0,0.2), inset 0 -3px 8px rgba(0,0,0,0.15);
-    transform: perspective(800px) rotateX(-95deg) translateY(-60%);
+    /* माणिक्य आइटम्स के लिए एक कंट्रास्टिंग लेकिन शाही बैकग्राउंड */
+    background-color: var(--stoc-saffron-dark); /* या #4a0e0e; गहरा महोगनी */
+    box-shadow: inset 0 8px 18px rgba(0,0,0,0.35), inset 0 -5px 12px rgba(0,0,0,0.25);
+    transform: perspective(700px) rotateX(-90deg) translateY(-40%);
     transform-origin: top center;
-    transition: max-height var(--stoc-transition-reveal) 0.1s,
-                padding var(--stoc-transition-reveal) 0.1s,
-                opacity calc(var(--stoc-transition-reveal) * 0.5) ease-in 0.25s,
+    transition: max-height var(--stoc-transition-reveal) 0.05s,
+                padding var(--stoc-transition-reveal) 0.05s,
+                opacity calc(var(--stoc-transition-reveal) * 0.7) ease-in 0.18s,
                 transform var(--stoc-transition-reveal) cubic-bezier(0.23, 1, 0.32, 1),
-                visibility 0s linear calc(var(--stoc-transition-reveal) * 0.75); /* अदृश्य होने में देरी */
-    border-top: 1px solid rgba(255,255,255,0.1);
-    border-bottom-left-radius: calc(var(--stoc-border-radius) - 3px);
-    border-bottom-right-radius: calc(var(--stoc-border-radius) - 3px);
-    visibility: hidden; /* <<< महत्वपूर्ण: प्रारंभ में छिपा हुआ */
+                visibility 0s linear calc(var(--stoc-transition-reveal) * 0.85);
+    border-top: 1.5px solid rgba(255,255,255,0.2);
+    visibility: hidden;
 }
-/* डिज़ाइन 2: बटन रैपर TOC के लिए */
+
+/* स्क्रॉलबॉक्स के लिए शाही भारतीय पैटर्न */
 #stoc-toc-button-scrollbox::before {
-    content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
     background-image:
-        radial-gradient(circle at center, var(--stoc-gold-pattern-strong) 2.5px, transparent 3px),
-        radial-gradient(var(--stoc-gold-pattern) 1px, transparent 1.2px),
-        radial-gradient(var(--stoc-gold-pattern) 1px, transparent 1.2px);
-    background-size: 40px 40px, 15px 15px, 15px 15px;
-    background-position: center center, 0 0, 7.5px 7.5px;
-    opacity: 0.8; /* थोड़ी कम ओपेसिटी */
+        /* सूक्ष्म कमल पंखुड़ी जैसा पैटर्न (सिमुलेशन) */
+        radial-gradient(ellipse at center, var(--stoc-gold-pattern-faint) 0%, transparent 40%),
+        /* स्वास्तिक प्रेरित इंटरसेक्टिंग लाइन्स (सिमुलेशन) */
+        repeating-linear-gradient(45deg, transparent, transparent 15px, var(--stoc-gold-pattern-subtle) 15px, var(--stoc-gold-pattern-subtle) 16px),
+        repeating-linear-gradient(-45deg, transparent, transparent 15px, var(--stoc-gold-pattern-subtle) 15px, var(--stoc-gold-pattern-subtle) 16px);
+    background-size: 60px 60px, 32px 32px, 32px 32px;
+    background-position: 0 0, 5px 5px, 5px 5px;
+    opacity: 0.5;
     pointer-events: none;
-    border-radius: inherit;
-    mix-blend-mode: luminosity; /* या 'soft-light' */
-    z-index: -1;
+    mix-blend-mode: soft-light; /* या overlay */
+    z-index: 0;
 }
 
 #stoc-toc-button-wrapper.expanded #stoc-toc-button-scrollbox {
-    max-height: var(--stoc-button-box-max-height-expanded); padding: 12px 8px; opacity: 1;
-    transform: perspective(800px) rotateX(0deg) translateY(0%); overflow-y: auto;
-    visibility: visible; /* <<< महत्वपूर्ण: खुलने पर दृश्यमान */
-    transition-delay: 0s, 0s, 0s, 0s, 0s; /* खुलने पर कोई देरी नहीं */
-}
-#stoc-toc-button-list { list-style: none; padding: 0 5px; margin: 0; }
-
-
-/* --- Floating TOC Icon & Sidebar (Restored and Styled) --- */
-#stoc-floating-toc-icon {
-    position: fixed;
-    top: 50%;
-    right: -70px; /* प्रारंभ में ऑफ-स्क्रीन */
-    transform: translateY(-50%);
-    width: 56px;
-    height: 56px;
-    background: linear-gradient(145deg, var(--stoc-ruby-deep), var(--stoc-saffron));
-    color: var(--stoc-text-light-on-dark);
-    border: 2.5px solid var(--stoc-gold-text);
-    border-radius: 50%;
-    font-size: 1.4em;
-    cursor: pointer;
-    z-index: 1001; /* सुनिश्चित करें कि यह अन्य सामग्री के ऊपर है */
-    box-shadow: 0 0 12px var(--stoc-saffron), 0 0 20px var(--stoc-ruby-deep), inset 0 0 7px rgba(255,255,255,0.25);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: right var(--stoc-transition-medium), transform var(--stoc-transition-medium),
-                opacity var(--stoc-transition-medium) 0s, visibility 0s linear var(--stoc-transition-medium), /* visibility को छिपाने में देरी */
-                background var(--stoc-transition-fast), box-shadow var(--stoc-transition-fast);
-    opacity: 0;
-    visibility: hidden; /* प्रारंभ में छिपा हुआ */
-    animation: stoc-float-gently 3.5s infinite ease-in-out;
-}
-#stoc-floating-toc-icon.visible { /* JS द्वारा यह क्लास जोड़ी जाएगी */
-    right: 20px;
+    max-height: var(--stoc-button-box-max-height-expanded);
+    padding: 18px 12px;
     opacity: 1;
+    transform: perspective(700px) rotateX(0deg) translateY(0%);
+    overflow-y: auto;
     visibility: visible;
-    transition-delay: 0s, 0s, 0s, 0s, 0s, 0s; /* प्रकट होने पर कोई देरी नहीं */
+    transition-delay: 0s, 0s, 0s, 0s, 0s;
+}
+
+#stoc-toc-button-list {
+    list-style: none;
+    padding: 0 6px;
+    margin: 0;
+    position: relative;
+    z-index: 1;
+}
+
+/* --- बटन TOC लिस्ट आइटम (माणिक्य रत्न जैसा, भारतीय पैटर्न) --- */
+#stoc-toc-button-scrollbox .stoc-toc-list-item {
+    margin-bottom: 8px;
+    border-radius: var(--stoc-item-border-radius);
+    padding: 0;
+    position: relative; /* पैटर्न के लिए ::before को समायोजित करने के लिए */
+    /* शानदार ग्रेडिएंट बॉर्डर के लिए जगह */
+    border: 2px solid transparent; /* यह 'border-image' के लिए आधार का काम करेगा */
+    background: linear-gradient(var(--stoc-ruby-gem-dark), var(--stoc-ruby-gem-light)) padding-box, /* सामग्री बॉक्स के लिए */
+                linear-gradient(135deg, var(--stoc-gold-highlight), var(--stoc-saffron-medium), var(--stoc-ruby-gem-light)) border-box; /* बॉर्डर बॉक्स के लिए */
+    box-shadow: 0 3px 8px rgba(0,0,0,0.3), inset 0 1px 3px rgba(255,255,255,0.15);
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+}
+#stoc-toc-button-scrollbox .stoc-toc-list-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 12px rgba(0,0,0,0.4), inset 0 1px 4px rgba(255,255,255,0.2);
+}
+
+/* आइटम पर सूक्ष्म भारतीय पैटर्न */
+#stoc-toc-button-scrollbox .stoc-toc-list-item::before {
+    content: "";
+    position: absolute;
+    inset: 2px; /* बॉर्डर के अंदर */
+    border-radius: calc(var(--stoc-item-border-radius) - 2px);
+    background-image:
+        radial-gradient(var(--stoc-gold-pattern-faint) 0.5px, transparent 0.6px),
+        radial-gradient(var(--stoc-gold-pattern-faint) 0.4px, transparent 0.5px);
+    background-size: 8px 8px, 6px 6px;
+    background-position: 0 0, 3px 3px;
+    opacity: 0.6;
+    mix-blend-mode: overlay;
+    pointer-events: none;
+    z-index: 0; /* टेक्स्ट के पीछे */
+}
+
+#stoc-toc-button-scrollbox .stoc-toc-list-item a {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 12px; /* थोड़ा अधिक पैडिंग */
+    text-decoration: none;
+    border-radius: calc(var(--stoc-item-border-radius) - 2px); /* बॉर्डर के अंदर फिट होने के लिए */
+    background-color: transparent; /* आइटम का रूबी ग्रेडिएंट दिखेगा */
+    position: relative; /* ::before पैटर्न के ऊपर टेक्स्ट */
+    z-index: 1;
+    transition: background-color var(--stoc-transition-fast);
+}
+#stoc-toc-button-scrollbox .stoc-toc-list-item a:hover {
+    background-color: rgba(255, 255, 255, 0.08); /* होवर पर सूक्ष्म चमक */
+}
+#stoc-toc-button-scrollbox .stoc-toc-list-item a.stoc-toc-link-clicked {
+    background-color: rgba(255,255,255,0.15); /* क्लिक पर अधिक चमक */
+    transform: scale(1.005); /* बहुत सूक्ष्म */
+}
+
+#stoc-toc-button-scrollbox .stoc-toc-list-item .stoc-toc-item-icon {
+    margin-top: 3px;
+    font-size: 0.95em;
+    width: 1.25em;
+    text-align: center;
+    color: var(--stoc-cream-text-on-ruby); /* माणिक पर हल्का टेक्स्ट */
+    opacity: 0.85;
+    flex-shrink: 0;
+    transition: color var(--stoc-transition-fast), transform 0.2s ease;
+}
+#stoc-toc-button-scrollbox .stoc-toc-list-item a:hover .stoc-toc-item-icon {
+    color: var(--stoc-gold-highlight);
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+#stoc-toc-button-scrollbox .stoc-toc-list-item .stoc-toc-item-text {
+    flex-grow: 1;
+    font-size: 0.95em; /* थोड़ा बड़ा */
+    line-height: 1.5;
+    font-weight: 600;
+    font-family: var(--stoc-font-main);
+    color: var(--stoc-cream-text-on-ruby); /* माणिक पर हल्का टेक्स्ट */
+    text-shadow: 0 0 5px rgba(0,0,0,0.5); /* पठनीयता के लिए */
+    background-image: none;
+    -webkit-background-clip: initial; -webkit-text-fill-color: initial;
+    background-clip: initial; text-fill-color: initial;
+}
+
+/* बटन TOC के लिए पदानुक्रम स्टाइल */
+#stoc-toc-button-scrollbox .stoc-toc-list-item.level-2 a { font-weight: 700; }
+#stoc-toc-button-scrollbox .stoc-toc-list-item.level-3 { margin-left: 15px; }
+#stoc-toc-button-scrollbox .stoc-toc-list-item.level-3 a { font-size: 0.92em; }
+#stoc-toc-button-scrollbox .stoc-toc-list-item.level-4 { margin-left: 30px; }
+#stoc-toc-button-scrollbox .stoc-toc-list-item.level-4 a { font-size: 0.9em; }
+
+
+/* --- Floating TOC Icon & Sidebar (Royal Vedic Remaster) --- */
+#stoc-floating-toc-icon {
+    position: fixed; top: 50%; right: -75px; transform: translateY(-50%);
+    width: 55px; height: 55px; /* थोड़ा बड़ा */
+    background: linear-gradient(145deg, var(--stoc-ruby-gem-medium), var(--stoc-saffron-dark)); /* गाढ़ा, चमकदार */
+    color: var(--stoc-gold-highlight);
+    border: 2.5px solid var(--stoc-gold-border); /* अधिक प्रमुख बॉर्डर */
+    border-radius: 50%; font-size: 1.4em; cursor: pointer; z-index: 1001;
+    box-shadow: 0 0 12px var(--stoc-saffron-medium), 0 0 20px var(--stoc-ruby-gem-dark), inset 0 0 7px rgba(255,223,186,0.3);
+    display: flex; align-items: center; justify-content: center;
+    transition: right var(--stoc-transition-medium), transform var(--stoc-transition-medium),
+                opacity var(--stoc-transition-medium) 0s, visibility 0s linear var(--stoc-transition-medium),
+                background var(--stoc-transition-fast), box-shadow var(--stoc-transition-fast);
+    opacity: 0; visibility: hidden;
+    animation: stoc-float-gently 3.8s infinite ease-in-out;
+}
+/* stoc-floating-toc-icon.visible, :hover, body.stoc-toc-sidebar-open styles पहले जैसे ही प्रभावी हैं, रंग समायोजित */
+#stoc-floating-toc-icon.visible {
+    right: 22px; opacity: 1; visibility: visible;
+    transition-delay: 0s, 0s, 0s, 0s, 0s, 0s;
 }
 #stoc-floating-toc-icon:hover {
-    transform: translateY(-50%) scale(1.12) rotate(12deg);
-    box-shadow: 0 0 18px var(--stoc-saffron), 0 0 30px var(--stoc-ruby-deep), inset 0 0 10px rgba(255,255,255,0.4);
+    transform: translateY(-50%) scale(1.18) rotate(18deg);
+    box-shadow: 0 0 18px var(--stoc-saffron-dark), 0 0 28px var(--stoc-ruby-gem-dark), inset 0 0 10px rgba(255,223,186,0.4);
     border-color: var(--stoc-gold-highlight);
 }
-body.stoc-toc-sidebar-open #stoc-floating-toc-icon { /* JS द्वारा body में क्लास जोड़ी जाएगी */
-    right: calc(var(--stoc-sidebar-width) + 25px);
-    transform: translateY(-50%) rotate(370deg);
-    background: linear-gradient(145deg, var(--stoc-saffron), var(--stoc-gold-text));
-    border-color: var(--stoc-ruby-deep);
+body.stoc-toc-sidebar-open #stoc-floating-toc-icon {
+    right: calc(var(--stoc-sidebar-width) + 28px);
+    transform: translateY(-50%) rotate(380deg);
+    background: linear-gradient(145deg, var(--stoc-saffron-light), var(--stoc-gold-highlight));
+    border-color: var(--stoc-ruby-gem-dark);
 }
-@keyframes stoc-float-gently {
-    0%, 100% { transform: translateY(-50%) rotate(-3deg); }
-    50% { transform: translateY(-52%) rotate(5deg); }
-}
+/* stoc-float-gently keyframes v4.8 से अपरिवर्तित */
+
 
 #stoc-toc-icon-sidebar {
     position: fixed; top: 0; right: 0; width: var(--stoc-sidebar-width); height: 100vh;
-    background-color: var(--stoc-ruby-deep);
-    box-shadow: -10px 0 30px rgba(78, 52, 46, 0.3);
-    transform: translateX(100%); /* प्रारंभ में ऑफ-स्क्रीन */
-    transition: transform var(--stoc-transition-long);
-    z-index: 1010; /* फ्लोटिंग आइकन के ऊपर */
-    display: flex; flex-direction: column; overflow: hidden;
-    border-left: 4px solid;
-    border-image: linear-gradient(to bottom, var(--stoc-gold-border), var(--stoc-saffron) 30%, var(--stoc-ruby-highlight) 70%, var(--stoc-ruby-deep)) 1;
-    visibility: hidden; /* <<< महत्वपूर्ण: JS द्वारा .visible क्लास से नियंत्रित होगा */
+    background-color: var(--stoc-deep-pink-base); /* गहरा गुलाबी बैकग्राउंड */
+    box-shadow: -10px 0 30px rgba(50, 0, 10, 0.35);
+    transform: translateX(100%);
+    transition: transform var(--stoc-transition-reveal);
+    z-index: 1010; display: flex; flex-direction: column; overflow: hidden;
+    border-left: 5px solid; /* शानदार ग्रेडिएंट बॉर्डर */
+    border-image: linear-gradient(to bottom,
+                    var(--stoc-gold-highlight),
+                    var(--stoc-saffron-medium) 30%,
+                    var(--stoc-ruby-gem-light) 60%,
+                    var(--stoc-ruby-gem-dark) 100%) 1;
+    visibility: hidden;
 }
-/* डिज़ाइन 1: फ्लोटिंग साइडबार के लिए */
+/* साइडबार के लिए शाही पैटर्न */
 #stoc-toc-icon-sidebar::before {
     content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
     background-image:
-        repeating-linear-gradient(45deg, transparent, transparent 10px, var(--stoc-gold-pattern) 10px, var(--stoc-gold-pattern) 11.5px),
-        repeating-linear-gradient(-45deg, transparent, transparent 10px, var(--stoc-gold-pattern) 10px, var(--stoc-gold-pattern) 11.5px),
-        radial-gradient(circle at center, var(--stoc-gold-pattern-strong) 1px, transparent 1.5px);
-    background-size: 30px 30px, 30px 30px, 15px 15px;
-    background-position: 0 0, 0 0, 0 0; opacity: 0.7; pointer-events: none;
-    mix-blend-mode: overlay; z-index: 0;
+        /* शाही बांधनी जैसा पैटर्न (सिमुलेशन) */
+        radial-gradient(circle at 15% 15%, var(--stoc-gold-pattern-subtle) 5%, transparent 5.5%),
+        radial-gradient(circle at 65% 65%, var(--stoc-gold-pattern-subtle) 5%, transparent 5.5%),
+        /* पारंपरिक जाली पैटर्न (सिमुलेशन) */
+        repeating-linear-gradient(135deg, transparent, transparent 8px, var(--stoc-gold-pattern-faint) 8px, var(--stoc-gold-pattern-faint) 9.5px),
+        repeating-linear-gradient(45deg, transparent, transparent 8px, var(--stoc-gold-pattern-faint) 8px, var(--stoc-gold-pattern-faint) 9.5px);
+    background-size: 50px 50px, 50px 50px, 20px 20px, 20px 20px;
+    opacity: 0.4; pointer-events: none; z-index: 0;
+    mix-blend-mode: overlay;
 }
 #stoc-toc-icon-sidebar > * { position: relative; z-index: 1; }
 
-#stoc-toc-icon-sidebar.visible { /* JS द्वारा यह क्लास जोड़ी जाएगी */
-    transform: translateX(0);
-    visibility: visible; /* <<< महत्वपूर्ण */
+#stoc-toc-icon-sidebar.visible {
+    transform: translateX(0); visibility: visible;
 }
 
-#stoc-toc-icon-sidebar-header { /* ... (v4.6 से स्टाइल) ... */ }
-#stoc-toc-sidebar-internal-close { /* ... (v4.6 से स्टाइल) ... */ }
-#stoc-toc-icon-sidebar-scrollbox { /* ... (v4.6 से स्टाइल) ... */ }
-#stoc-toc-icon-sidebar-list { /* ... (v4.6 से स्टाइल) ... */ }
-#stoc-toc-sidebar-external-close { /* ... (v4.6 से स्टाइल) ... */ }
-/* सुनिश्चित करें कि external-close का z-index साइडबार से ज़्यादा हो */
-#stoc-toc-sidebar-external-close { z-index: 1011; }
+#stoc-toc-icon-sidebar-header {
+    padding: 18px 55px 18px 22px;
+    border-bottom: 1.5px solid rgba(var(--stoc-gold-border), 0.3);
+    flex-shrink: 0; position: relative;
+    background: linear-gradient(135deg, rgba(var(--stoc-gold-deep-text), 0.1), rgba(var(--stoc-saffron-medium), 0.05));
+}
+#stoc-toc-icon-sidebar-header h3 {
+    margin: 0; font-family: var(--stoc-font-heading); font-size: 1.3em;
+    font-weight: 700; text-align: center; color: var(--stoc-gold-rich-text); /* सुनहरा टेक्स्ट */
+    text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+}
+#stoc-toc-sidebar-internal-close {
+    position: absolute; top: 50%; right: 15px; transform: translateY(-50%);
+    background: none; border: none; width: 36px; height: 36px; font-size: 1.4em;
+    color: var(--stoc-gold-rich-text); cursor: pointer; display: flex; justify-content: center;
+    align-items: center; border-radius: 50%;
+    transition: background-color var(--stoc-transition-fast), color var(--stoc-transition-fast), transform var(--stoc-transition-medium);
+    opacity: 0.8;
+}
+#stoc-toc-sidebar-internal-close:hover {
+    background-color: rgba(var(--stoc-gold-highlight), 0.15);
+    color: var(--stoc-gold-highlight);
+    transform: translateY(-50%) rotate(180deg) scale(1.1);
+    opacity: 1;
+}
+#stoc-toc-icon-sidebar-scrollbox {
+    flex-grow: 1; overflow-y: auto;
+    padding: 18px 12px 18px 18px; position: relative;
+}
+#stoc-toc-icon-sidebar-list {
+    list-style: none; padding: 0 0 12vh 0; margin: 0;
+}
+
+/* साइडबार के लिए लिस्ट आइटम स्टाइल */
+#stoc-toc-icon-sidebar .stoc-toc-list-item {
+    margin-bottom: 7px; border-radius: var(--stoc-item-border-radius); padding: 1.5px; /* ग्रेडिएंट बॉर्डर के लिए */
+    background: linear-gradient(120deg, var(--stoc-gold-highlight), var(--stoc-saffron-medium) 40%, var(--stoc-gold-border) 70%, var(--stoc-saffron-dark) 100%);
+    background-size: 250% 250%; animation: stoc-gradient-bg-animation 8s ease infinite alternate;
+    overflow: hidden; transition: box-shadow 0.3s ease, transform 0.2s ease;
+}
+/* stoc-gradient-bg-animation keyframes पहले जैसे */
+#stoc-toc-icon-sidebar .stoc-toc-list-item:hover {
+    box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+    transform: scale(1.01);
+}
+
+#stoc-toc-icon-sidebar .stoc-toc-list-item a {
+    display: flex; align-items: flex-start; gap: 9px; padding: 9px 12px;
+    text-decoration: none; border-radius: calc(var(--stoc-item-border-radius) - 1.5px); position: relative; z-index: 1;
+    background-color: var(--stoc-sidebar-item-bg); /* गुलाबी बैकग्राउंड पर कंट्रास्ट के लिए हल्का */
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+#stoc-toc-icon-sidebar .stoc-toc-list-item a:hover {
+    background-color: #ffffff; /* थोड़ा और चमकदार */
+}
+#stoc-toc-icon-sidebar .stoc-toc-list-item a.stoc-toc-link-clicked {
+    background-color: #fff0f5; /* हल्का गुलाबी टिंट */
+    transform: scale(1.005);
+}
+
+#stoc-toc-icon-sidebar .stoc-toc-list-item .stoc-toc-item-icon {
+    margin-top: 2.5px; font-size: 0.92em; width: 1.15em; text-align: center;
+    opacity: 1; transition: color 0.2s ease; flex-shrink: 0;
+    color: var(--stoc-deep-pink-medium); /* टेक्स्ट से अलग रंग */
+}
+#stoc-toc-icon-sidebar .stoc-toc-list-item .stoc-toc-item-text {
+    flex-grow: 1; font-size: 0.94em; line-height: 1.55; font-weight: 600;
+    font-family: var(--stoc-font-main); white-space: normal; word-break: break-word;
+    color: var(--stoc-gold-rich-text); /* सुनहरा टेक्स्ट */
+    /* ग्रेडिएंट टेक्स्ट वैकल्पिक, अगर चाहें तो हटा सकते हैं */
+    /* background-image: linear-gradient(to right, var(--stoc-gold-deep-text), var(--stoc-gold-rich-text)); */
+    /* -webkit-background-clip: text; -webkit-text-fill-color: transparent; */
+    /* background-clip: text; text-fill-color: transparent; */
+    text-shadow: 0 0 3px rgba(var(--stoc-deep-pink-base), 0.1);
+}
+
+/* साइडबार पदानुक्रम स्टाइल */
+#stoc-toc-icon-sidebar .stoc-toc-list-item.level-2 a { font-weight: 700; background-color: #fffaf0; } /* हल्का नारंगी-पीला */
+#stoc-toc-icon-sidebar .stoc-toc-list-item.level-2 .stoc-toc-item-icon { color: var(--stoc-deep-pink-base); font-size: 1.02em; }
+
+#stoc-toc-icon-sidebar .stoc-toc-list-item.level-3 { padding-left: 18px; }
+#stoc-toc-icon-sidebar .stoc-toc-list-item.level-3 a { background-color: #fff5f5; } /* और भी हल्का गुलाबी */
+#stoc-toc-icon-sidebar .stoc-toc-list-item.level-3 .stoc-toc-item-icon { color: var(--stoc-deep-pink-medium); }
+
+#stoc-toc-icon-sidebar .stoc-toc-list-item.level-4 { padding-left: 36px; }
+#stoc-toc-icon-sidebar .stoc-toc-list-item.level-4 a { background-color: #f8f8ff; } /* लैवेंडर जैसा */
+#stoc-toc-icon-sidebar .stoc-toc-list-item.level-4 .stoc-toc-item-icon { color: var(--stoc-saffron-medium); }
 
 
-/* --- Shared TOC List Item Styling (पहले जैसे) --- */
-/* ... (v4.6 से लिस्ट आइटम स्टाइल) ... */
+#stoc-toc-sidebar-external-close {
+    position: fixed; top: 50%; left: -65px;
+    transform: translateY(-50%) scale(0.85);
+    width: 42px; height: 42px;
+    background: linear-gradient(135deg, var(--stoc-ruby-gem-light), var(--stoc-saffron-dark));
+    border: none; border-radius: 50%; color: var(--stoc-gold-highlight);
+    font-size: 1.35em; cursor: pointer;
+    box-shadow: 0 6px 18px rgba(var(--stoc-ruby-gem-dark), 0.45);
+    z-index: 1011; display: flex; justify-content: center; align-items: center;
+    opacity: 0; visibility: hidden;
+    transition: all var(--stoc-transition-medium);
+}
+#stoc-toc-sidebar-external-close.visible {
+    opacity: 1; visibility: visible; left: 20px;
+    transform: translateY(-50%) scale(1);
+}
+#stoc-toc-sidebar-external-close:hover {
+    transform: translateY(-50%) scale(1.15) rotate(-18deg);
+    box-shadow: 0 9px 25px rgba(var(--stoc-ruby-gem-dark), 0.6);
+}
 
-
-/* --- Hierarchy Styling (पहले जैसे) --- */
-/* ... (v4.6 से पदानुक्रम स्टाइल) ... */
-
-
-/* --- साझा स्क्रॉल इंडिकेटर (सुनिश्चित करें कि यह visible है) --- */
+/* --- साझा स्क्रॉल इंडिकेटर (रंग समायोजित) --- */
 .stoc-toc-scroll-indicator {
-    position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
-    font-size: 1.6em; opacity: 0; /* JS द्वारा .visible से नियंत्रित */
-    pointer-events: none; color: var(--stoc-scroll-indicator-color);
-    text-shadow: 0 0 8px rgba(var(--stoc-saffron), 0.6);
+    /* पहले जैसा, लेकिन रंग वेरिएबल्स पर निर्भर */
+    position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%);
+    font-size: 1.7em; opacity: 0; pointer-events: none;
+    text-shadow: 0 0 10px rgba(255,255,255,0.4);
     animation: stoc-bounce-pulse-vedic 2s infinite ease-in-out;
     transition: opacity 0.4s ease; z-index: 5;
 }
-.stoc-toc-scroll-indicator.visible { /* JS द्वारा यह क्लास जोड़ी जाएगी */
-    opacity: 0.85;
+#stoc-toc-button-scrollbox .stoc-toc-scroll-indicator { color: var(--stoc-scroll-indicator-color); }
+#stoc-toc-icon-sidebar-scrollbox .stoc-toc-scroll-indicator { color: var(--stoc-sidebar-scroll-indicator-color); }
+/* .stoc-toc-scroll-indicator.visible और keyframes पहले जैसे */
+.stoc-toc-scroll-indicator.visible { opacity: 0.9; }
+@keyframes stoc-bounce-pulse-vedic {
+    0%, 100% { transform: translate(-50%, 0px) scale(1); opacity: 0.75; }
+    50% { transform: translate(-50%, -7px) scale(1.08); opacity: 1; }
 }
-@keyframes stoc-bounce-pulse-vedic { /* v1.4 से stoc-bounce-pulse जैसा */
-    0%, 100% { transform: translate(-50%, 0px) scale(1); opacity: 0.7; }
-    50% { transform: translate(-50%, -6px) scale(1.05); opacity: 1; }
+
+/* --- Custom Scrollbars (रंग समायोजित) --- */
+#stoc-toc-button-scrollbox::-webkit-scrollbar,
+#stoc-toc-icon-sidebar-scrollbox::-webkit-scrollbar { width: 7px; }
+
+#stoc-toc-button-scrollbox::-webkit-scrollbar-track,
+#stoc-toc-icon-sidebar-scrollbox::-webkit-scrollbar-track { background: rgba(0,0,0,0.15); border-radius: 4px; }
+
+#stoc-toc-button-scrollbox::-webkit-scrollbar-thumb { background: var(--stoc-gold-border); border-radius: 4px; }
+#stoc-toc-icon-sidebar-scrollbox::-webkit-scrollbar-thumb { background: var(--stoc-gold-rich-text); border-radius: 4px; }
+
+#stoc-toc-button-scrollbox,
+#stoc-toc-icon-sidebar-scrollbox {
+    scrollbar-width: thin;
 }
+#stoc-toc-button-scrollbox { scrollbar-color: var(--stoc-gold-border) rgba(0,0,0,0.15); }
+#stoc-toc-icon-sidebar-scrollbox { scrollbar-color: var(--stoc-gold-rich-text) rgba(0,0,0,0.15); }
 
 
-/* --- Custom Scrollbars (पहले जैसे) --- */
-/* ... (v4.6 से स्क्रॉलबार स्टाइल) ... */
-
-
-/* --- कंटेंट हाइलाइटिंग (सुनिश्चित करें कि यह काम कर रहा है) --- */
-/* एनिमेशन परिभाषाएँ */
+/* --- कंटेंट हाइलाइटिंग (रंग समायोजित, अधिक शाही) --- */
 @keyframes stoc-radiant-highlight-heading-vedic {
   0%, 100% {
-    text-shadow: 0 0 6px var(--stoc-gold-highlight), 0 0 12px var(--stoc-saffron), 0 0 18px var(--stoc-ruby-highlight), 0 0 2px var(--stoc-text-light-on-dark);
-    color: var(--stoc-ruby-highlight) !important;
-    transform: scale(1.01); /* थोड़ा सा स्केल */
+    text-shadow: 0 0 6px var(--stoc-gold-highlight), 0 0 12px var(--stoc-saffron-medium), 0 0 18px var(--stoc-deep-pink-highlight);
+    color: var(--stoc-deep-pink-highlight) !important;
+    transform: scale(1.015);
   }
   50% {
-    text-shadow: 0 0 10px var(--stoc-gold-highlight), 0 0 20px var(--stoc-saffron), 0 0 30px var(--stoc-ruby-highlight), 0 0 40px var(--stoc-pink-very-deep), 0 0 3px var(--stoc-text-light-on-dark);
-    color: var(--stoc-pink-very-deep) !important;
-    transform: scale(1.04); /* थोड़ा और स्केल */
+    text-shadow: 0 0 10px var(--stoc-gold-highlight), 0 0 20px var(--stoc-saffron-dark), 0 0 30px var(--stoc-deep-pink-base), 0 0 40px var(--stoc-gold-deep-text);
+    color: var(--stoc-gold-deep-text) !important;
+    transform: scale(1.035);
   }
 }
 @keyframes stoc-radiant-highlight-paragraph-bg-vedic {
   0%, 100% {
-    background-color: rgba(255, 202, 40, 0.15);
-    box-shadow: 0 0 10px rgba(255,202,40,0.25), inset 0 0 6px rgba(255,160,0,0.15), 0 0 0 1.5px rgba(var(--stoc-gold-border), 0.4);
+    background-color: rgba(var(--stoc-saffron-medium), 0.15);
+    box-shadow: 0 0 10px rgba(var(--stoc-saffron-medium),0.25), inset 0 0 6px rgba(var(--stoc-gold-border),0.15), 0 0 0 1.5px rgba(var(--stoc-gold-border), 0.35);
   }
   50% {
-    background-color: rgba(255, 202, 40, 0.3);
-    box-shadow: 0 0 20px rgba(255,202,40,0.45), inset 0 0 12px rgba(255,160,0,0.25), 0 0 0 2px rgba(var(--stoc-gold-border), 0.6);
+    background-color: rgba(var(--stoc-saffron-dark), 0.28);
+    box-shadow: 0 0 18px rgba(var(--stoc-saffron-dark),0.4), inset 0 0 12px rgba(var(--stoc-gold-border),0.25), 0 0 0 2px rgba(var(--stoc-gold-border), 0.55);
   }
 }
-
-/* JS द्वारा जोड़ी जाने वाली क्लास के साथ एनिमेशन को ट्रिगर करें */
+/* .stoc-toc-target-heading.stoc-highlight-active, .stoc-toc-target-paragraph.stoc-highlight-active, .fading-out स्टाइल्स पहले जैसे, एनीमेशन नाम अपडेट */
 .stoc-toc-target-heading.stoc-highlight-active {
-    position: relative; padding: 3px 5px; margin: 0 -5px; border-radius: 4px;
-    animation: stoc-radiant-highlight-heading-vedic var(--stoc-highlight-duration) ease-in-out forwards; /* forwards महत्वपूर्ण है */
+    position: relative; padding: 2px 4px; margin: 0 -4px; border-radius: 3px;
+    animation: stoc-radiant-highlight-heading-vedic var(--stoc-highlight-duration) ease-in-out forwards;
     will-change: text-shadow, color, transform;
 }
 .stoc-toc-target-paragraph.stoc-highlight-active {
-    position: relative; padding: 12px; margin: 8px -12px; border-radius: var(--stoc-border-radius);
-    animation: stoc-radiant-highlight-paragraph-bg-vedic var(--stoc-highlight-duration) ease-in-out forwards; /* forwards महत्वपूर्ण है */
+    position: relative; padding: 10px; margin: 6px -10px; border-radius: var(--stoc-border-radius);
+    animation: stoc-radiant-highlight-paragraph-bg-vedic var(--stoc-highlight-duration) ease-in-out forwards;
     will-change: background-color, box-shadow;
 }
-
-/* फेड-आउट के लिए (JS द्वारा हाइलाइट अवधि के बाद जोड़ा जाएगा) */
+/* Fading out styles (पहले जैसे) */
 .stoc-toc-target-heading.fading-out,
 .stoc-toc-target-paragraph.fading-out {
-    animation: none !important; /* चल रहे एनिमेशन को तुरंत रोकें */
-    transition: color 0.5s ease-out, text-shadow 0.5s ease-out, transform 0.5s ease-out,
-                background-color 0.5s ease-out, box-shadow 0.5s ease-out,
-                padding 0.5s ease-out, margin 0.5s ease-out;
-    /* मूल स्थिति में वापस */
-    color: inherit !important;
-    text-shadow: none !important;
-    transform: scale(1) !important;
-    background-color: transparent !important;
-    box-shadow: none !important;
+    animation: none !important;
+    transition: color 0.4s ease-out, text-shadow 0.4s ease-out, transform 0.4s ease-out,
+                background-color 0.4s ease-out, box-shadow 0.4s ease-out,
+                padding 0.4s ease-out, margin 0.4s ease-out;
+    color: inherit !important; text-shadow: none !important; transform: scale(1) !important;
+    background-color: transparent !important; box-shadow: none !important;
 }
 .stoc-toc-target-paragraph.fading-out { padding: 0 !important; margin: 0 0 1em 0 !important; }
 .stoc-toc-target-heading.fading-out { padding: 0 !important; margin: 0 !important; }
 
 
-/* --- Responsive & Accessibility (पहले जैसे) --- */
-/* ... */
+/* --- Responsive (पहले जैसे, मान समायोजित) --- */
+@media (max-width: 768px) {
+    :root {
+        --stoc-sidebar-width: clamp(250px, 85vw, 290px);
+    }
 
-/* --- Post Content Headings (पहले जैसे) --- */
-/* ... */
+    #stoc-floating-toc-icon {
+        width: 50px; height: 50px; font-size: 1.25em;
+        right: 18px;
+    }
+    body.stoc-toc-sidebar-open #stoc-floating-toc-icon {
+        right: calc(var(--stoc-sidebar-width) + 20px);
+    }
+    #stoc-toc-sidebar-external-close {
+        width: 38px; height: 38px; font-size: 1.25em; left: 15px;
+    }
+    #stoc-toc-sidebar-external-close.visible { left: 15px; }
 
-/* --- End of Vedic Bloom TOC CSS --- */
+
+    #stoc-toc-button-header h3 { font-size: 1.25em; }
+    .stoc-toc-button-title-text { font-size: 0.75em; }
+    #stoc-toc-button-toggle-icon { font-size: 1.5em; }
+
+    #stoc-toc-icon-sidebar-header h3 { font-size: 1.2em; }
+
+    #stoc-toc-button-scrollbox .stoc-toc-list-item a,
+    #stoc-toc-icon-sidebar .stoc-toc-list-item a { padding: 8px 10px; }
+
+    #stoc-toc-button-scrollbox .stoc-toc-list-item .stoc-toc-item-text,
+    #stoc-toc-icon-sidebar .stoc-toc-list-item .stoc-toc-item-text { font-size: 0.92em; }
+
+    #stoc-toc-button-scrollbox .stoc-toc-list-item.level-3,
+    #stoc-toc-icon-sidebar .stoc-toc-list-item.level-3 { padding-left: 12px; margin-left: 12px;}
+    #stoc-toc-button-scrollbox .stoc-toc-list-item.level-4,
+    #stoc-toc-icon-sidebar .stoc-toc-list-item.level-4 { padding-left: 24px; margin-left: 24px;}
+
+    .stoc-toc-target-paragraph { padding: 8px; margin-left: -8px; margin-right: -8px; }
+}
+
+/* एक्सेसिबिलिटी: कम मोशन प्राथमिकता (पहले जैसे, मामूली समायोजन) */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+        transition-delay: 0ms !important;
+    }
+
+    .stoc-toc-open-prompt-icon,
+    #stoc-floating-toc-icon,
+    #stoc-toc-icon-sidebar .stoc-toc-list-item,
+    .stoc-toc-target-heading.stoc-highlight-active,
+    .stoc-toc-target-paragraph.stoc-highlight-active,
+    .stoc-toc-scroll-indicator,
+    #stoc-toc-sidebar-internal-close,
+    #stoc-toc-sidebar-external-close {
+        animation: none !important;
+    }
+
+    #stoc-toc-button-toggle-icon { transition: transform 0.01ms !important; }
+    #stoc-toc-button-wrapper.collapsed #stoc-toc-button-toggle-icon { transform: rotate(0deg); }
+    #stoc-toc-button-wrapper.expanded #stoc-toc-button-toggle-icon { transform: rotate(-180deg); }
+
+    #stoc-toc-button-scrollbox { transition: max-height 0.01ms, padding 0.01ms, opacity 0.01ms, transform 0.01ms !important; }
+    #stoc-toc-icon-sidebar { transition: transform 0.01ms !important; }
+    #stoc-toc-sidebar-external-close { transition: opacity 0.01ms, visibility 0.01ms, transform 0.01ms, left 0.01ms !important; }
+
+    #stoc-floating-toc-icon:hover,
+    #stoc-toc-button-header:hover,
+    #stoc-toc-button-wrapper:hover,
+    #stoc-toc-sidebar-external-close:hover,
+    #stoc-toc-icon-sidebar .stoc-toc-list-item a:hover,
+    #stoc-toc-button-scrollbox .stoc-toc-list-item a:hover {
+        transform: none !important;
+    }
+    #stoc-toc-button-header:hover { background-color: rgba(0,0,0,0.06) !important; }
+    #stoc-toc-button-scrollbox .stoc-toc-list-item a:hover { background-color: rgba(255, 255, 255, 0.05) !important; }
+    #stoc-toc-icon-sidebar .stoc-toc-list-item a:hover { background-color: #fdfdfd !important; }
+    #stoc-toc-sidebar-internal-close:hover { background-color: rgba(var(--stoc-gold-highlight),0.1) !important; color: var(--stoc-gold-highlight) !important; }
+}
+
+
+/* --- पोस्ट कंटेंट हेडिंग्स के लिए बेसिक स्टाइल (पहले जैसे) --- */
+.post-body h1, .post-body h2, .post-body h3,
+.post-body h4, .post-body h5, .post-body h6 {
+    font-family: var(--stoc-font-heading);
+    scroll-margin-top: 80px;
+    padding-top: 5px; padding-bottom: 5px;
+}
+/* Optional: Apply theme colors (पहले जैसे, आवश्यकतानुसार समायोजित करें) */
+/*
+.post-body h1 { color: var(--stoc-deep-pink-base); }
+.post-body h2 { color: var(--stoc-gold-deep-text); }
+.post-body h3 { color: var(--stoc-ruby-gem-medium); }
+*/
+
+/* --- End of Vedic Bloom TOC CSS (Royal Vedic Remaster) --- */
