@@ -1,9 +1,9 @@
 /* ==========================================================================
-   Vedic Bloom TOC CSS for Blogger (v5.8.2 - Ruby Sidebar, Custom Highlight Effects, Enhanced Button Pattern)
+   Vedic Bloom TOC CSS for Blogger (v5.8.2 - Ruby Sidebar, Custom Highlight Effects, Further Enhanced Button Pattern)
    Author: [Your Name/Website Optional]
    Description: Sidebar main background changed to opaque Ruby.
                 New custom gradient highlight effects for headings and paragraphs.
-                Ensured highlight functionality. Button TOC pattern visibility enhanced.
+                Ensured highlight functionality. Button TOC pattern visibility further enhanced.
    JS Compatibility: Maintained.
    ========================================================================== */
 
@@ -51,9 +51,9 @@
     --stoc-ivory: #FFFFF0; /* हाथीदांत */
         --stoc-ivory-rgb: 255, 255, 240;
 
-    /* पैटर्न के रंग (v4.9 बटन TOC के लिए) */
-    --stoc-button-toc-pattern-dot: rgba(var(--stoc-gold-text-rgb), 0.25); /* अल्फा थोड़ा बढ़ाया */
-    --stoc-button-toc-pattern-dot-strong: rgba(var(--stoc-gold-text-rgb), 0.4); /* अल्फा थोड़ा बढ़ाया */
+    /* पैटर्न के रंग (v4.9 बटन TOC के लिए) - और अधिक उभारे गए */
+    --stoc-button-toc-pattern-dot: rgba(var(--stoc-gold-text-rgb), 0.45); /* अल्फा बढ़ाया गया */
+    --stoc-button-toc-pattern-dot-strong: rgba(var(--stoc-gold-text-rgb), 0.65); /* अल्फा बढ़ाया गया */
 
     /* साइडबार पैटर्न अब रूबी बैकग्राउंड पर, रंग समायोजित */
     --stoc-sidebar-pattern-color1: rgba(var(--stoc-gold-text-rgb), 0.18);
@@ -228,7 +228,8 @@
 
 #stoc-toc-button-scrollbox {
     max-height: 0;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
     padding: 0 10px;
     position: relative;
     z-index: 2;
@@ -245,20 +246,29 @@
     border-top: 1px solid rgba(255,255,255,0.15);
     visibility: hidden;
 }
-/* विशिष्ट ग्रेडिएंट पैटर्न डिजाइन - अपडेटेड */
+
+/* विशिष्ट ग्रेडिएंट पैटर्न डिजाइन - और अधिक उभारा गया */
 #stoc-toc-button-scrollbox::before {
     content: "";
     position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+
     background-image:
-        radial-gradient(var(--stoc-button-toc-pattern-dot) 1px, transparent 1.2px),
-        radial-gradient(var(--stoc-button-toc-pattern-dot-strong) 0.8px, transparent 1px);
+        radial-gradient(var(--stoc-button-toc-pattern-dot) 1.1px, transparent 1.3px), /* डॉट्स का आकार थोड़ा बढ़ाया गया */
+        radial-gradient(var(--stoc-button-toc-pattern-dot-strong) 0.9px, transparent 1.1px); /* डॉट्स का आकार थोड़ा बढ़ाया गया */
     background-size: 12px 12px, 8px 8px;
     background-position: 0 0, 4px 4px;
-    opacity: 0.8; /* ओपेसिटी बढ़ा दी गई है */
-    mix-blend-mode: normal; /* ब्लेंड मोड को 'normal' किया गया ताकि पैटर्न स्पष्ट दिखे */
+    background-attachment: local; /* सामग्री के साथ स्क्रॉल करे */
+
+    opacity: 0.95; /* समग्र अपारदर्शिता लगभग पूरी तरह से अपारदर्शी की गई */
+    mix-blend-mode: normal; /* कंट्रास्ट को अधिकतम रखेगा */
     pointer-events: none;
-    z-index: 0;
+    z-index: -1; /* सामग्री के पीछे */
 }
 
 #stoc-toc-button-wrapper.expanded #stoc-toc-button-scrollbox {
@@ -266,7 +276,6 @@
     padding: 15px 10px;
     opacity: 1;
     transform: perspective(600px) rotateX(0deg) translateY(0%);
-    overflow-y: auto;
     visibility: visible;
     transition-delay: 0s, 0s, 0s, 0s, 0s;
 }
@@ -276,7 +285,7 @@
     padding: 0 5px;
     margin: 0;
     position: relative;
-    z-index: 1;
+    z-index: 1; /* पैटर्न के ऊपर */
 }
 
 /* --- बटन TOC लिस्ट आइटम (v4.9 style) --- */
@@ -832,4 +841,4 @@ body.stoc-toc-sidebar-open #stoc-floating-toc-icon {
     padding-top: 5px; padding-bottom: 5px;
 }
 
-/* --- End of Vedic Bloom TOC CSS (v5.8.2 - Ruby Sidebar, Custom Highlight Effects, Enhanced Button Pattern) --- */
+/* --- End of Vedic Bloom TOC CSS (v5.8.2 - Ruby Sidebar, Custom Highlight Effects, Further Enhanced Button Pattern) --- */
