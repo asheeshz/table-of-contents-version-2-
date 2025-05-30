@@ -1,8 +1,9 @@
 /* ==========================================================================
-   Vedic Bloom TOC CSS for Blogger (v5.8 - Ruby Sidebar & New Item Design)
+   Vedic Bloom TOC CSS for Blogger (v5.8 - Ruby Sidebar & New Item Design - Corrected Highlight)
    Author: [Your Name/Website Optional]
    Description: Sidebar main background changed to opaque Ruby.
                 Sidebar TOC item background design and color revamped.
+                Content highlight functionality restored.
    JS Compatibility: Maintained.
    ========================================================================== */
 
@@ -34,7 +35,6 @@
     --stoc-gold-text: #FFD700;
         --stoc-gold-text-rgb: 255, 215, 0;
     --stoc-gold-rich-text: #FFD700; /* साइडबार टेक्स्ट के लिए फिर से चमकदार सुनहरा, रूबी पर अच्छा लगेगा */
-        /* --stoc-gold-rich-text-rgb: 255, 215, 0; */ /* यदि आवश्यक हो */
     --stoc-gold-deep-text: #B8860B;
         --stoc-gold-deep-text-rgb: 184, 134, 11;
     --stoc-gold-border: #FFB300;
@@ -43,6 +43,11 @@
         --stoc-gold-highlight-rgb: 255, 238, 88;
     --stoc-gold-pale: #FFF8E1;
         --stoc-gold-pale-rgb: 255, 248, 225;
+
+    /* बटन TOC स्क्रॉलबॉक्स आइटम के लिए */
+    --stoc-ruby-gem-dark: #700000;
+    --stoc-ruby-gem-light: #B31B1B;
+    --stoc-cream-text-on-ruby: #FFF3E0;
 
 
     /* पैटर्न के रंग */
@@ -61,7 +66,6 @@
     /* Text & Background */
     --stoc-text-light-on-dark: #FFFDE7;
     --stoc-text-dark-on-light: #4E342E;
-    /* --stoc-bg-light: #FFFDF5; */ /* अब साइडबार आइटम के लिए सीधे परिभाषित */
     --stoc-border-color-light: #FFCC80;
 
     /* साइडबार आइटम डिज़ाइन (नया) */
@@ -96,7 +100,6 @@
     --stoc-sidebar-scroll-indicator-color: var(--stoc-gold-text); /* रूबी पर सुनहरा स्क्रॉल इंडिकेटर */
 }
 
-/* ... (Google Fonts, Base Reset - अपरिवर्तित) ... */
 /* Google Fonts Import */
 @import url('https://fonts.googleapis.com/css2?family=Laila:wght@400;600;700&family=Martel:wght@600;700;800&family=Noto+Sans+Devanagari:wght@400;600&family=Noto+Serif+Devanagari:wght@600;700&display=swap');
 
@@ -111,7 +114,7 @@
 #stoc-toc-icon-sidebar-list {
     line-height: 1.45;
 }
-/* ... (Collapsible Button TOC - अपरिवर्तित) ... */
+
 #stoc-toc-button-wrapper {
     margin-bottom: 30px;
     position: relative;
@@ -229,15 +232,8 @@
     position: relative;
     z-index: 2;
     opacity: 0;
-    background-color: var(--stoc-saffron-dark);
-    background-image:
-        radial-gradient(ellipse at center, var(--stoc-button-scrollbox-pattern-color1) 0%, transparent 40%),
-        repeating-linear-gradient(45deg, transparent, transparent 15px, var(--stoc-button-scrollbox-pattern-color2) 15px, var(--stoc-button-scrollbox-pattern-color2) 16px),
-        repeating-linear-gradient(-45deg, transparent, transparent 15px, var(--stoc-button-scrollbox-pattern-color2) 15px, var(--stoc-button-scrollbox-pattern-color2) 16px);
-    background-size: 60px 60px, 32px 32px, 32px 32px;
-    background-position: 0 0, 5px 5px, 5px 5px;
-    background-repeat: repeat;
-    background-attachment: local;
+    background-color: var(--stoc-saffron-dark); /* This is the base color */
+    /* Removed the direct background-image here, item will handle its own background */
     box-shadow: inset 0 8px 18px rgba(0,0,0,0.35), inset 0 -5px 12px rgba(0,0,0,0.25);
     transform: perspective(700px) rotateX(-90deg) translateY(-40%);
     transform-origin: top center;
@@ -273,9 +269,9 @@
     border-radius: var(--stoc-item-border-radius);
     padding: 0;
     position: relative;
-    border: 2px solid transparent;
-    background: linear-gradient(var(--stoc-ruby-gem-dark), var(--stoc-ruby-gem-light)) padding-box,
-                linear-gradient(135deg, var(--stoc-gold-highlight), var(--stoc-saffron-medium), var(--stoc-ruby-gem-light)) border-box;
+    border: 2px solid transparent; /* For gradient border */
+    background: linear-gradient(var(--stoc-ruby-gem-dark), var(--stoc-ruby-gem-light)) padding-box, /* Actual background */
+                linear-gradient(135deg, var(--stoc-gold-highlight), var(--stoc-saffron-medium), var(--stoc-ruby-gem-light)) border-box; /* Gradient border */
     box-shadow: 0 3px 8px rgba(0,0,0,0.3), inset 0 1px 3px rgba(255,255,255,0.15);
     transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
 }
@@ -284,10 +280,10 @@
     box-shadow: 0 5px 12px rgba(0,0,0,0.4), inset 0 1px 4px rgba(255,255,255,0.2);
 }
 
-#stoc-toc-button-scrollbox .stoc-toc-list-item::before {
+#stoc-toc-button-scrollbox .stoc-toc-list-item::before { /* Inner pattern overlay */
     content: "";
     position: absolute;
-    inset: 2px;
+    inset: 2px; /* Inside the border */
     border-radius: calc(var(--stoc-item-border-radius) - 2px);
     background-image:
         radial-gradient(var(--stoc-pattern-direct-on-ruby) 0.6px, transparent 0.7px),
@@ -295,33 +291,33 @@
     background-size: 9px 9px, 7px 7px;
     background-position: 0 0, 3px 3px;
     background-repeat: repeat;
-    opacity: 1;
+    opacity: 1; /* Was 0.4, made it 1 to be more visible on ruby */
     pointer-events: none;
-    z-index: 0;
+    z-index: 0; /* Behind 'a' tag's content */
 }
 
 #stoc-toc-button-scrollbox .stoc-toc-list-item a {
     display: flex;
-    align-items: flex-start;
+    align-items: flex-start; /* Changed from center for potentially longer text */
     gap: 10px;
     padding: 10px 12px;
     text-decoration: none;
-    border-radius: calc(var(--stoc-item-border-radius) - 2px);
-    background-color: transparent;
-    position: relative;
+    border-radius: calc(var(--stoc-item-border-radius) - 2px); /* Match inner radius */
+    background-color: transparent; /* Li has the background now */
+    position: relative; /* To be above ::before */
     z-index: 1;
     transition: background-color var(--stoc-transition-fast);
 }
 #stoc-toc-button-scrollbox .stoc-toc-list-item a:hover {
-    background-color: rgba(255, 255, 255, 0.08);
+    background-color: rgba(255, 255, 255, 0.08); /* Slight hover effect on the link itself */
 }
 #stoc-toc-button-scrollbox .stoc-toc-list-item a.stoc-toc-link-clicked {
-    background-color: rgba(var(--stoc-pink-very-deep-rgb),0.1);
-    transform: scale(1.005);
+    background-color: rgba(var(--stoc-pink-very-deep-rgb),0.1); /* Clicked effect */
+    transform: scale(1.005); /* Subtle click scale */
 }
 
 #stoc-toc-button-scrollbox .stoc-toc-list-item .stoc-toc-item-icon {
-    margin-top: 3px;
+    margin-top: 3px; /* Align with text */
     font-size: 0.95em;
     width: 1.25em;
     text-align: center;
@@ -333,6 +329,7 @@
 #stoc-toc-button-scrollbox .stoc-toc-list-item a:hover .stoc-toc-item-icon,
 #stoc-toc-button-scrollbox .stoc-toc-list-item a.stoc-toc-link-clicked .stoc-toc-item-icon {
     color: var(--stoc-gold-highlight);
+    /* transform: scale(1.1); */ /* Optional icon hover effect */
 }
 
 #stoc-toc-button-scrollbox .stoc-toc-list-item .stoc-toc-item-text {
@@ -342,14 +339,15 @@
     font-weight: 600;
     font-family: var(--stoc-font-main);
     color: var(--stoc-cream-text-on-ruby);
-    text-shadow: 0 0 5px rgba(0,0,0,0.5);
+    text-shadow: 0 0 5px rgba(0,0,0,0.5); /* Text shadow for readability on ruby */
 }
 
-#stoc-toc-button-scrollbox .stoc-toc-list-item.level-2 a { font-weight: 700; }
-#stoc-toc-button-scrollbox .stoc-toc-list-item.level-3 { margin-left: 15px; padding-left:0; }
+#stoc-toc-button-scrollbox .stoc-toc-list-item.level-2 a { font-weight: 700; /* font-size: 0.95em; Kept same as parent */ }
+#stoc-toc-button-scrollbox .stoc-toc-list-item.level-3 { margin-left: 15px; padding-left:0; } /* Indent the whole item */
 #stoc-toc-button-scrollbox .stoc-toc-list-item.level-3 a { font-size: 0.92em; }
-#stoc-toc-button-scrollbox .stoc-toc-list-item.level-4 { margin-left: 30px; padding-left:0; }
+#stoc-toc-button-scrollbox .stoc-toc-list-item.level-4 { margin-left: 30px; padding-left:0; } /* Indent further */
 #stoc-toc-button-scrollbox .stoc-toc-list-item.level-4 a { font-size: 0.9em; }
+
 
 /* --- Floating TOC Icon & Sidebar --- */
 #stoc-floating-toc-icon {
@@ -649,7 +647,7 @@ body.stoc-toc-sidebar-open #stoc-floating-toc-icon {
 #stoc-toc-button-scrollbox { scrollbar-color: var(--stoc-gold-border) rgba(0,0,0,0.2); }
 #stoc-toc-icon-sidebar-scrollbox { scrollbar-color: var(--stoc-gold-text) rgba(0,0,0,0.2); }
 
-/* --- कंटेंट हाइलाइटिंग --- */
+/* --- कंटेंट हाइलाइटिंग (सुधारित) --- */
 @keyframes stoc-radiant-highlight-heading-vedic {
   0%, 100% {
     text-shadow: 0 0 6px var(--stoc-gold-highlight), 0 0 12px var(--stoc-saffron-medium), 0 0 18px var(--stoc-ruby-highlight);
@@ -664,19 +662,22 @@ body.stoc-toc-sidebar-open #stoc-floating-toc-icon {
 }
 @keyframes stoc-radiant-highlight-paragraph-bg-vedic {
   0%, 100% {
-    background-color: rgba(var(--stoc-saffron-medium-rgb), 0.2) !important; /* थोड़ा और स्पष्ट */
+    background-color: rgba(var(--stoc-saffron-medium-rgb), 0.2) !important;
     box-shadow: 0 0 10px rgba(var(--stoc-saffron-medium-rgb),0.3),
                 inset 0 0 6px rgba(var(--stoc-gold-border-rgb),0.2),
                 0 0 0 1.5px rgba(var(--stoc-gold-border-rgb), 0.4) !important;
-    border-radius: var(--stoc-border-radius);
+    border-radius: var(--stoc-border-radius) !important; /* !important जोड़ा गया */
     padding: 10px !important;
     margin: 6px -10px !important;
   }
   50% {
-    background-color: rgba(var(--stoc-saffron-dark-rgb), 0.35) !important; /* थोड़ा और स्पष्ट */
+    background-color: rgba(var(--stoc-saffron-dark-rgb), 0.35) !important;
     box-shadow: 0 0 18px rgba(var(--stoc-saffron-dark-rgb),0.45),
                 inset 0 0 12px rgba(var(--stoc-gold-border-rgb),0.3),
                 0 0 0 2px rgba(var(--stoc-gold-border-rgb), 0.6) !important;
+    border-radius: var(--stoc-border-radius) !important; /* !important जोड़ा गया */
+    padding: 10px !important;
+    margin: 6px -10px !important;
   }
 }
 
@@ -686,12 +687,11 @@ body.stoc-toc-sidebar-open #stoc-floating-toc-icon {
     will-change: text-shadow, color, transform;
 }
 
-.post-body > .stoc-toc-target-paragraph.stoc-highlight-active,
-.post-body p.stoc-toc-target-paragraph.stoc-highlight-active,
-.post-body div.stoc-toc-target-paragraph.stoc-highlight-active {
+/* पैराग्राफ के लिए सेलेक्टर को सामान्य बनाया गया */
+.post-body .stoc-toc-target-paragraph.stoc-highlight-active {
     position: relative;
     animation: stoc-radiant-highlight-paragraph-bg-vedic var(--stoc-highlight-duration) ease-in-out forwards;
-    will-change: background-color, box-shadow, padding, margin;
+    will-change: background-color, box-shadow, padding, margin, border-radius; /* border-radius जोड़ा गया */
 }
 
 .stoc-toc-target-heading.fading-out,
@@ -699,13 +699,15 @@ body.stoc-toc-sidebar-open #stoc-floating-toc-icon {
     animation: none !important;
     transition: color 0.4s ease-out, text-shadow 0.4s ease-out, transform 0.4s ease-out,
                 background-color 0.4s ease-out, box-shadow 0.4s ease-out,
-                padding 0.4s ease-out, margin 0.4s ease-out, outline 0.4s ease-out;
+                padding 0.4s ease-out, margin 0.4s ease-out, outline 0.4s ease-out,
+                border-radius 0.4s ease-out; /* border-radius ट्रांजिशन जोड़ा गया */
     color: inherit !important;
     text-shadow: none !important;
     transform: scale(1) !important;
     background-color: transparent !important;
     box-shadow: none !important;
     outline: none !important;
+    border-radius: 0 !important; /* border-radius रीसेट जोड़ा गया */
 }
 .stoc-toc-target-paragraph.fading-out { padding: 0 !important; margin: 0 0 1em 0 !important; }
 .stoc-toc-target-heading.fading-out { padding: 0 !important; margin: 0 !important; }
@@ -752,7 +754,11 @@ body.stoc-toc-sidebar-open #stoc-floating-toc-icon {
     #stoc-toc-button-scrollbox .stoc-toc-list-item.level-4,
     #stoc-toc-icon-sidebar .stoc-toc-list-item.level-4 { padding-left: 18px; margin-left:0; }
 
-    .stoc-toc-target-paragraph.stoc-highlight-active { padding: 8px !important; margin-left: -8px !important; margin-right: -8px !important; }
+    /* सुनिश्चित करें कि मोबाइल पर हाइलाइटिंग पैडिंग सही है */
+    .post-body .stoc-toc-target-paragraph.stoc-highlight-active {
+        padding: 8px !important;
+        margin: 6px -8px !important; /* padding के अनुरूप */
+    }
 }
 
 /* एक्सेसिबिलिटी: कम मोशन प्राथमिकता */
@@ -807,4 +813,4 @@ body.stoc-toc-sidebar-open #stoc-floating-toc-icon {
     padding-bottom: 8px;
 }
 
-/* --- End of Vedic Bloom TOC CSS (v5.8 - Ruby Sidebar & New Item Design) --- */
+/* --- End of Vedic Bloom TOC CSS (v5.8 - Ruby Sidebar & New Item Design - Corrected Highlight) --- */
